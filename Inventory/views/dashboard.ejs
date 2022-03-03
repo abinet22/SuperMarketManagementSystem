@@ -12,8 +12,381 @@
     <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="styles/shards-dashboards.1.1.0.min.css">
     <link rel="stylesheet" href="styles/extras.1.1.0.min.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
   </head>
-  <body class="h-100">
+  <style>
+    @import "compass/css3";
+ @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic|Montserrat:400,700);
+ @import "compass/reset";
+ * {
+	 box-sizing: border-box;
+}
+ body {
+	 color: #333;
+	 -webkit-font-smoothing: antialiased;
+	 font-family: 'Droid Serif', serif;
+}
+ img {
+	 max-width: 100%;
+}
+ .cf:before, .cf:after {
+	 content: " ";
+	 display: table;
+}
+ .cf:after {
+	 clear: both;
+}
+ .cf {
+	 *zoom: 1;
+}
+ .wrap {
+	 width: 75%;
+	 max-width: 960px;
+	 margin: 0 auto;
+	 padding: 5% 0;
+	 margin-bottom: 5em;
+}
+ .projTitle {
+	 font-family: 'Montserrat', sans-serif;
+	 font-weight: bold;
+	 text-align: center;
+	 font-size: 2em;
+	 padding: 1em 0;
+	 border-bottom: 1px solid #dadada;
+	 letter-spacing: 3px;
+	 text-transform: uppercase;
+}
+ .projTitle span {
+	 font-family: 'Droid Serif', serif;
+	 font-weight: normal;
+	 font-style: italic;
+	 text-transform: lowercase;
+	 color: #777;
+}
+ .heading {
+	 padding: 1em 0;
+	 border-bottom: 1px solid #d0d0d0;
+}
+ .heading h1 {
+	 font-family: 'Droid Serif', serif;
+	 font-size: 2em;
+	 float: left;
+}
+ .heading a.continue:link, .heading a.continue:visited {
+	 text-decoration: none;
+	 font-family: 'Montserrat', sans-serif;
+	 letter-spacing: -0.015em;
+	 font-size: 0.75em;
+	 padding: 1em;
+	 color: #fff;
+	 background: #82ca9c;
+	 font-weight: bold;
+	 border-radius: 50px;
+	 float: right;
+	 text-align: right;
+	 -webkit-transition: all 0.25s linear;
+	 -moz-transition: all 0.25s linear;
+	 -ms-transition: all 0.25s linear;
+	 -o-transition: all 0.25s linear;
+	 transition: all 0.25s linear;
+}
+ .heading a.continue:after {
+	 content: "\276f";
+	 padding: 0.5em;
+	 position: relative;
+	 right: 0;
+	 -webkit-transition: all 0.15s linear;
+	 -moz-transition: all 0.15s linear;
+	 -ms-transition: all 0.15s linear;
+	 -o-transition: all 0.15s linear;
+	 transition: all 0.15s linear;
+}
+ .heading a.continue:hover, .heading a.continue:focus, .heading a.continue:active {
+	 background: #f69679;
+}
+ .heading a.continue:hover:after, .heading a.continue:focus:after, .heading a.continue:active:after {
+	 right: -10px;
+}
+ .tableHead {
+	 display: table;
+	 width: 100%;
+	 font-family: 'Montserrat', sans-serif;
+	 font-size: 0.75em;
+}
+ .tableHead li {
+	 display: table-cell;
+	 padding: 1em 0;
+	 text-align: center;
+}
+ .tableHead li.prodHeader {
+	 text-align: left;
+}
+ .cart {
+	 padding: 1em 0;
+}
+ .cart .items {
+	 display: block;
+	 width: 100%;
+	 vertical-align: middle;
+	 padding: 1.0em;
+	 border-bottom: 1px solid #fafafa;
+}
+ .cart .items.even {
+	 background: #fafafa;
+}
+ .cart .items .infoWrap {
+	 display: table;
+	 width: 100%;
+}
+ .cart .items .cartSection {
+	 display: table-cell;
+	 vertical-align: middle;
+}
+ .cart .items .cartSection .itemNumber {
+	 font-size: 0.75em;
+	 color: #777;
+	 margin-bottom: 0.3em;
+}
+ .cart .items .cartSection h3 {
+	 font-size: 1em;
+	 font-family: 'Montserrat', sans-serif;
+	 font-weight: bold;
+	 text-transform: uppercase;
+	 letter-spacing: 0.025em;
+}
+ .cart .items .cartSection p {
+	 display: inline-block;
+	 font-size: 0.85em;
+	 color: #777;
+	 font-family: 'Montserrat', sans-serif;
+}
+ .cart .items .cartSection p .quantity {
+	 font-weight: bold;
+	 color: #333;
+}
+ .cart .items .cartSection p.stockStatus {
+	 color: #82ca9c;
+	 font-weight: bold;
+	 padding: 0.5em 0 0 1em;
+	 text-transform: uppercase;
+}
+ .cart .items .cartSection p.stockStatus.out {
+	 color: #f69679;
+}
+ .cart .items .cartSection .itemImg {
+	 width: 4em;
+	 float: left;
+}
+ .cart .items .cartSection.qtyWrap, .cart .items .cartSection.prodTotal {
+	 text-align: center;
+}
+ .cart .items .cartSection.qtyWrap p, .cart .items .cartSection.prodTotal p {
+	 font-weight: bold;
+	 font-size: 1.25em;
+}
+ .cart .items .cartSection input.qty {
+	 width: 2em;
+	 text-align: center;
+	 font-size: 1em;
+	 padding: 0.25em;
+	 margin: 1em 0.5em 0 0;
+}
+ .cart .items .cartSection .itemImg {
+	 width: 8em;
+	 display: inline;
+	 padding-right: 1em;
+}
+ .special {
+	 display: block;
+	 font-family: 'Montserrat', sans-serif;
+}
+ .special .specialContent {
+	 padding: 1em 1em 0;
+	 display: block;
+	 margin-top: 0.5em;
+	 border-top: 1px solid #dadada;
+}
+ .special .specialContent:before {
+	 content: "\21b3";
+	 font-size: 1.5em;
+	 margin-right: 1em;
+	 color: #6f6f6f;
+	 font-family: helvetica, arial, sans-serif;
+}
+ a.remove {
+	 text-decoration: none;
+	 font-family: 'Montserrat', sans-serif;
+	 color: #fff;
+	 font-weight: bold;
+	 background: #e0e0e0;
+	 padding: 0.5em;
+	 font-size: 0.75em;
+	 display: inline-block;
+	 border-radius: 100%;
+	 line-height: 0.85;
+	 -webkit-transition: all 0.25s linear;
+	 -moz-transition: all 0.25s linear;
+	 -ms-transition: all 0.25s linear;
+	 -o-transition: all 0.25s linear;
+	 transition: all 0.25s linear;
+}
+ a.remove:hover {
+	 background: #f30;
+}
+ .promoCode {
+	 border: 2px solid #efefef;
+	 float: left;
+	 width: 35%;
+	 padding: 2%;
+}
+ .promoCode label {
+	 display: block;
+	 width: 100%;
+	 font-style: italic;
+	 font-size: 1.15em;
+	 margin-bottom: 0.5em;
+	 letter-spacing: -0.025em;
+}
+ .promoCode input {
+	 width: 85%;
+	 font-size: 1em;
+	 padding: 0.5em;
+	 float: left;
+	 border: 1px solid #dadada;
+}
+ .promoCode input:active, .promoCode input:focus {
+	 outline: 0;
+}
+ .promoCode a.btn {
+	 float: left;
+	 width: 15%;
+	 padding: 0.75em 0;
+	 border-radius: 0 1em 1em 0;
+	 text-align: center;
+	 border: 1px solid #82ca9c;
+}
+ .promoCode a.btn:hover {
+	 border: 1px solid #f69679;
+	 background: #f69679;
+}
+ .btn:link, .btn:visited {
+	 text-decoration: none;
+	 font-family: 'Montserrat', sans-serif;
+	 letter-spacing: -0.015em;
+	 font-size: 1em;
+	 padding: 1em 3em;
+	 color: #fff;
+	 background: #82ca9c;
+	 font-weight: bold;
+	 border-radius: 50px;
+	 float: right;
+	 text-align: right;
+	 -webkit-transition: all 0.25s linear;
+	 -moz-transition: all 0.25s linear;
+	 -ms-transition: all 0.25s linear;
+	 -o-transition: all 0.25s linear;
+	 transition: all 0.25s linear;
+}
+ .btn:after {
+	 content: "\276f";
+	 padding: 0.5em;
+	 position: relative;
+	 right: 0;
+	 -webkit-transition: all 0.15s linear;
+	 -moz-transition: all 0.15s linear;
+	 -ms-transition: all 0.15s linear;
+	 -o-transition: all 0.15s linear;
+	 transition: all 0.15s linear;
+}
+ .btn:hover, .btn:focus, .btn:active {
+	 background: #f69679;
+}
+ .btn:hover:after, .btn:focus:after, .btn:active:after {
+	 right: -10px;
+}
+ .promoCode .btn {
+	 font-size: 0.85em;
+	 paddding: 0.5em 2em;
+}
+/* TOTAL AND CHECKOUT */
+ .subtotal {
+	 float: right;
+	 width: 35%;
+}
+ .subtotal .totalRow {
+	 padding: 0.5em;
+	 text-align: left;
+}
+ .subtotal .totalRow.final {
+	 font-size: 1.25em;
+	 font-weight: bold;
+}
+ .subtotal .totalRow span {
+	 display: inline-block;
+	 padding: 0 0 0 1em;
+	 text-align: left;
+   
+}
+ .subtotal .totalRow .label {
+	 font-family: 'Montserrat', sans-serif;
+	 font-size: 0.85em;
+	 text-transform: uppercase;
+	 color: #777;
+   text-align: left;
+}
+ .subtotal .totalRow .value {
+	 letter-spacing: -0.025em;
+	 width: 35%;
+   text-align: right;
+}
+ @media only screen and (max-width: 39.375em) {
+	 .wrap {
+		 width: 98%;
+		 padding: 2% 0;
+	}
+	 .projTitle {
+		 font-size: 1.5em;
+		 padding: 10% 5%;
+	}
+	 .heading {
+		 padding: 1em;
+		 font-size: 90%;
+	}
+	 .cart .items .cartSection {
+		 width: 90%;
+		 display: block;
+		 float: left;
+	}
+	 .cart .items .cartSection.qtyWrap {
+		 width: 10%;
+		 text-align: center;
+		 padding: 0.5em 0;
+		 float: right;
+	}
+	 .cart .items .cartSection.qtyWrap:before {
+		 content: "QTY";
+		 display: block;
+		 font-family: 'Montserrat', sans-serif;
+		 padding: 0.25em;
+		 font-size: 0.75em;
+	}
+	 .cart .items .cartSection.prodTotal, .cart .items .cartSection.removeWrap {
+		 display: none;
+	}
+	 .cart .items .cartSection .itemImg {
+		 width: 25%;
+	}
+	 .promoCode, .subtotal {
+		 width: 100%;
+	}
+	 a.btn.continue {
+		 width: 100%;
+		 text-align: center;
+	}
+}
+ 
+  </style>
+  <body class="h-100" onload="createTable()">
     
     <div class="container-fluid">
       <div class="row">
@@ -43,55 +416,15 @@
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
-             
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">people</i>
-                  <span>Manage User</span>
+              <li class="nav-item">
+                <a class="nav-link active" href="/">
+                  <i class="material-icons">add_to_queue
+                  </i>
+                  <span>Inventory</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-small">
-                    
-               
-                  <a class="dropdown-item text-danger" href="/adduser">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Add New User</span> </a>
-                 
-                    <a class="dropdown-item text-danger" href="/userlist">
-                        <i class="material-icons text-danger">playlist_add_check</i><span>User List</span> </a>
-                </div>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">shop</i>
-                  <span>Manage Shops</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-small">
-                    
-               
-                  <a class="dropdown-item text-danger" href="/addnewshop">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Add New Shop</span> </a>
-                 
-               
-                    <a class="dropdown-item text-danger" href="/shoplist">
-                        <i class="material-icons text-danger">playlist_add_check</i><span>Shop List</span> </a>
-                </div>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">shopping_cart</i>
-                    <span>Manage Products</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-small">
-                    
-               
-                  <a class="dropdown-item text-danger" href="/addcategory">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Add Product Category</span> </a>
-                  <a class="dropdown-item text-danger" href="/addproduct">
-                    <i class="material-icons text-danger">add_circle_outline</i><span> Add Product</span></a>
-               
-                    <a class="dropdown-item text-danger" href="/productlist">
-                        <i class="material-icons text-danger">playlist_add_check</i><span>Product List</span> </a>
-                </div>
-              </li>
+              
+           
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="material-icons">reorder
@@ -101,8 +434,6 @@
                 <div class="dropdown-menu dropdown-menu-small">
                     
                
-                  <a class="dropdown-item text-danger" href="/inventory">
-                    <i class="material-icons text-danger">view_day</i><span> Inventory</span> </a>
                   <a class="dropdown-item text-danger" href="/inventorylist">
                     <i class="material-icons text-danger">view_comfy</i><span> Inventory List</span></a>
                     <a class="dropdown-item text-danger" href="/inventoryalert">
@@ -127,7 +458,7 @@
                
                     </div>
               </li>
-             
+          
              
             </ul>
           </div>
@@ -144,8 +475,10 @@
                       <i class="fas fa-search"></i>
                     </div>
                   </div>
-                  <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
-              </form>
+               
+                  <input class="navbar-search form-control" type="text"  aria-label="Search"> </div>
+              
+                </form>
               <ul class="navbar-nav border-left flex-row ">
                 <li class="nav-item border-right dropdown notifications">
                   <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -163,8 +496,8 @@
                       </div>
                       <div class="notification__content">
                         <span class="notification__category">Analytics</span>
-                        <p>Your website’s active users count increased by
-                          <span class="text-success text-semibold">28%</span> in the last week. Great job!</p>
+                        <p>No of transaction
+                          <span class="text-info text-semibold">280</span></p>
                       </div>
                     </a>
                     <a class="dropdown-item" href="#">
@@ -175,17 +508,17 @@
                       </div>
                       <div class="notification__content">
                         <span class="notification__category">Sales</span>
-                        <p>Last week your store’s sales count decreased by
-                          <span class="text-danger text-semibold">5.52%</span>. It could have been worse!</p>
+                        <p>To day Sale
+                          <span class="text-info text-semibold">5000</span></p>
                       </div>
                     </a>
-                    <a class="dropdown-item notification__all text-center" href="#"> View all Notifications </a>
+                    <a class="dropdown-item notification__all text-center" href="/report"> View all Notifications </a>
                   </div>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <img class="user-avatar rounded-circle mr-2" src="images/avatars/0.jpg" alt="User Avatar">
-                    <span class="d-none d-md-inline-block">Sierra Brooks</span>
+                    <span class="d-none d-md-inline-block"><%= user.username %></span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
                     <a class="dropdown-item" href="user-profile-lite.html">
@@ -210,152 +543,12 @@
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <span class="text-uppercase page-subtitle">Dashboard</span>
-                <h3 class="page-title">Overview</h3>
+                <h3 class="page-title">Inventory</h3>
               </div>
             </div>
             <!-- End Page Header -->
             <!-- Small Stats Blocks -->
-            <div class="row">
-              <div class="col-lg col-md-6 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Total Sales</span>
-                        <h6 class="stats-small__value count my-3">2,390</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase">4.7%</span>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-1"></canvas>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg col-md-6 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Top Sold Product</span>
-                        <h6 class="stats-small__value count my-3">182</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase">12.4%</span>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-2"></canvas>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg col-md-4 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Total Transaction</span>
-                        <h6 class="stats-small__value count my-3">8,147</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--decrease">3.8%</span>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-3"></canvas>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg col-md-4 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Top Shop</span>
-                        <h6 class="stats-small__value count my-3">2,413</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase">12.4%</span>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-4"></canvas>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg col-md-4 col-sm-12 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Top Sale vs Top Shop</span>
-                        <h6 class="stats-small__value count my-3">17,281</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--decrease">2.4%</span>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-5"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End Small Stats Blocks -->
-            <div class="row">
-              <!-- Users Stats -->
-              <div class="col-lg-8 col-md-12 col-sm-12 mb-4">
-                <div class="card card-small">
-                  <div class="card-header border-bottom">
-                    <h6 class="m-0">Sale</h6>
-                  </div>
-                  <div class="card-body pt-0">
-                    <div class="row border-bottom py-2 bg-light">
-                      <div class="col-12 col-sm-6">
-                        <div id="blog-overview-date-range" class="input-daterange input-group input-group-sm my-auto ml-auto mr-auto ml-sm-auto mr-sm-0" style="max-width: 350px;">
-                          <input type="text" class="input-sm form-control" name="start" placeholder="Start Date" id="blog-overview-date-range-1">
-                          <input type="text" class="input-sm form-control" name="end" placeholder="End Date" id="blog-overview-date-range-2">
-                          <span class="input-group-append">
-                            <span class="input-group-text">
-                              <i class="material-icons"></i>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-6 d-flex mb-2 mb-sm-0">
-                        <button type="button" class="btn btn-sm btn-white ml-auto mr-auto ml-sm-auto mr-sm-0 mt-3 mt-sm-0">View Full Report &rarr;</button>
-                      </div>
-                    </div>
-                    <canvas height="130" style="max-width: 100% !important;" class="blog-overview-users"></canvas>
-                  </div>
-                </div>
-              </div>
-              <!-- End Users Stats -->
-              <!-- Users By Device Stats -->
-              <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                <div class="card card-small h-100">
-                  <div class="card-header border-bottom">
-                    <h6 class="m-0">Shop By Sales</h6>
-                  </div>
-                  <div class="card-body d-flex py-0">
-                    <canvas height="220" class="blog-users-by-device m-auto"></canvas>
-                  </div>
-                  <div class="card-footer border-top">
-                    <div class="row">
-                      <div class="col">
-                        <select class="custom-select custom-select-sm" style="max-width: 130px;">
-                          <option selected>Last Week</option>
-                          <option value="1">Today</option>
-                          <option value="2">Last Month</option>
-                          <option value="3">Last Year</option>
-                        </select>
-                      </div>
-                      <div class="col text-right view-report">
-                        <a href="#">Full report &rarr;</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          
-              <!-- End Top Referrals Component -->
-            </div>
+         
           </div>
           <footer class="main-footer d-flex p-2 px-3 bg-white border-top">
        
@@ -376,5 +569,6 @@
     <script src="scripts/extras.1.1.0.min.js"></script>
     <script src="scripts/shards-dashboards.1.1.0.min.js"></script>
     <script src="scripts/app/app-blog-overview.1.1.0.js"></script>
+    <script src="scripts/app/parsetable.js"></script>
   </body>
 </html>

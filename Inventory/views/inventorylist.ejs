@@ -39,59 +39,32 @@
                   <i class="fas fa-search"></i>
                 </div>
               </div>
-              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+              <input class="navbar-search form-control" type="text"  aria-label="Search"> </div>
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
-             
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">people</i>
-                  <span>Manage User</span>
+              <li class="nav-item">
+                <a class="nav-link active" href="/">
+                  <i class="material-icons">add_to_queue
+                  </i>
+                  <span>Inventory</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-small">
-                    
-               
-                  <a class="dropdown-item text-danger" href="/adduser">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Add New User</span> </a>
-                 
-               
-                    <a class="dropdown-item text-danger" href="/userlist">
-                        <i class="material-icons text-danger">playlist_add_check</i><span>User List</span> </a>
-                </div>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">shop</i>
-                  <span>Manage Shops</span>
+                    <i class="material-icons">reorder
+                    </i>
+                    <span>Manage Inventory</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-small">
                     
                
-                  <a class="dropdown-item text-danger" href="/addnewshop">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Add New Shop</span> </a>
+                  <a class="dropdown-item text-danger" href="/inventorylist">
+                    <i class="material-icons text-danger">view_comfy</i><span> Inventory List</span></a>
+                    <a class="dropdown-item text-danger" href="/inventoryalert">
+                      <i class="material-icons text-danger">message</i><span> Inventory Alerts</span></a>
                  
-               
-                    <a class="dropdown-item text-danger" href="/shoplist">
-                        <i class="material-icons text-danger">playlist_add_check</i><span>Shop List</span> </a>
-                </div>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">shopping_cart</i>
-                    <span>Manage Products</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-small">
-                    
-               
-                  <a class="dropdown-item text-danger" href="/addcategory">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Add Product Category</span> </a>
-                  <a class="dropdown-item text-danger" href="/addproduct">
-                    <i class="material-icons text-danger">add_circle</i><span> Add Product</span></a>
-               
-                    <a class="dropdown-item text-danger" href="/productlist">
-                        <i class="material-icons text-danger">playlist_add_check</i><span>Product List</span> </a>
-                </div>
+                    </div>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -103,9 +76,10 @@
                     
                
                   <a class="dropdown-item text-danger" href="/report">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Show Reports</span> </a>
+                    <i class="material-icons text-danger">share
+                    </i><span> Show Reports</span> </a>
                   <a class="dropdown-item text-danger" href="/stastics">
-                    <i class="material-icons text-danger">add_circle</i><span> Show Stastics</span></a>
+                    <i class="material-icons text-danger">timeline</i><span> Show Stastics</span></a>
                
                     </div>
               </li>
@@ -137,6 +111,7 @@
                     </div>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small" aria-labelledby="dropdownMenuLink">
+                
                     <a class="dropdown-item" href="#">
                       <div class="notification__icon-wrapper">
                         <div class="notification__icon">
@@ -145,8 +120,8 @@
                       </div>
                       <div class="notification__content">
                         <span class="notification__category">Analytics</span>
-                        <p>Your website’s active users count increased by
-                          <span class="text-success text-semibold">28%</span> in the last week. Great job!</p>
+                        <p>No of transaction
+                          <span class="text-info text-semibold">280</span></p>
                       </div>
                     </a>
                     <a class="dropdown-item" href="#">
@@ -157,17 +132,18 @@
                       </div>
                       <div class="notification__content">
                         <span class="notification__category">Sales</span>
-                        <p>Last week your store’s sales count decreased by
-                          <span class="text-danger text-semibold">5.52%</span>. It could have been worse!</p>
+                        <p>To day Sale
+                          <span class="text-info text-semibold">5000</span></p>
                       </div>
                     </a>
-                    <a class="dropdown-item notification__all text-center" href="#"> View all Notifications </a>
+                    <a class="dropdown-item notification__all text-center" href="/report"> View all Notifications </a>
+               
                   </div>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <img class="user-avatar rounded-circle mr-2" src="images/avatars/0.jpg" alt="User Avatar">
-                    <span class="d-none d-md-inline-block">Sierra Brooks</span>
+                    <span class="d-none d-md-inline-block"> <%= user.username %></span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
                     <a class="dropdown-item" href="user-profile-lite.html">
@@ -192,39 +168,69 @@
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <span class="text-uppercase page-subtitle">Dashboard</span>
-                <h3 class="page-title">Manage Shops</h3>
+                <h3 class="page-title">Manage Inventory/List</h3>
               </div>
             </div>
             <!-- End Page Header -->
             <!-- Small Stats Blocks -->
             <div class="row">
-           <div class ="col-md-6 offset-md-3">
-           <div class="card">
-               <div class= "card-header">
-                   <h3>Add New Shop</h3>
-               </div>
-               <div class="card-body">
-                <form action="/addnewshop" method="post">
-                  <%- include ('./partials/messages') %>
-                    <div class="form-group">
-                      <label for="exampleFormControlInput1">ShopName</label>
-                      <input type="text" class="form-control" id="shopname" name="shopname" placeholder="Shop Name">
+              <div class="col py-5">
+                  <div class="card card-small ">
+                    <div class="card-header border-bottom">
+                      <h6 class="m-0">Inventory Product List</h6>
                     </div>
-    
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" placeholder="Shop Address">
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleFormControlInput1">Phone Number</label>
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
-                      </div>
-      <button type="submit" class="btn btn-sm btn-block btn-primary">ADD SHOP</button>
-                  </form>
-               </div>
-           </div>
-           </div>
-            </div>
+                    <div class="card-body">
+                      <div class="ZipDatatable"><table id="ZipcodesTable" class="table table-bordered table-sm">
+                        <thead>
+                        <tr>
+                        <th>ProductId</th>
+                        <th>ProductCategory</th>
+                        <th>ProductName</th>
+                        <th>Quantity</th>
+                        </tr></thead><tbody></tbody>
+                        </table>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+               
+            
+            </div>          
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+           
+         
+  
+         <script>
+           $(document).ready(function () {
+            $.noConflict();
+        var t = $('#ZipcodesTable').DataTable({
+            "paging": true,
+            "pageLength": 10,
+            "processing": true,
+            "serverSide": true,
+            'ajax': {
+                'type': 'POST',
+                'url': '/populateZipCodes'
+            },
+            'columns':
+                [
+                { 'data': 'productid', "defaultContent": "", 'name': 'ProductId' },
+                { 'data': 'procategory', "defaultContent": "", 'name': 'ProductCategory' },
+                { 'data': 'productname', "defaultContent": "", 'name': 'ProductName' },
+                { 'data': 'quantity', "defaultContent": "", 'name': 'Quantity' }
+                ],
+            "columnDefs": [
+                {
+                    "searchable": true,
+                    "orderable": false,
+                    "targets": 0
+                }
+            ]
+});
+           });
+         </script>
             <!-- End Small Stats Blocks -->
          
           

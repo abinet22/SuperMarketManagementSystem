@@ -39,59 +39,32 @@
                   <i class="fas fa-search"></i>
                 </div>
               </div>
-              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+              <input class="navbar-search form-control" type="text"  aria-label="Search"> </div>
           </form>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
-             
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">people</i>
-                  <span>Manage User</span>
+              <li class="nav-item">
+                <a class="nav-link active" href="/">
+                  <i class="material-icons">local_grocery_store
+                  </i>
+                  <span>Sale</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-small">
-                    
-               
-                  <a class="dropdown-item text-danger" href="/adduser">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Add New User</span> </a>
-                 
-               
-                    <a class="dropdown-item text-danger" href="/userlist">
-                        <i class="material-icons text-danger">playlist_add_check</i><span>User List</span> </a>
-                </div>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">shop</i>
-                  <span>Manage Shops</span>
+                    <i class="material-icons">reorder
+                    </i>
+                    <span>Manage Inventory</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-small">
                     
                
-                  <a class="dropdown-item text-danger" href="/addnewshop">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Add New Shop</span> </a>
+                  <a class="dropdown-item text-danger" href="/inventorylist">
+                    <i class="material-icons text-danger">view_comfy</i><span> Inventory List</span></a>
+                    <a class="dropdown-item text-danger" href="/inventoryalert">
+                      <i class="material-icons text-danger">message</i><span> Inventory Alerts</span></a>
                  
-               
-                    <a class="dropdown-item text-danger" href="/shoplist">
-                        <i class="material-icons text-danger">playlist_add_check</i><span>Shop List</span> </a>
-                </div>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">shopping_cart</i>
-                    <span>Manage Products</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-small">
-                    
-               
-                  <a class="dropdown-item text-danger" href="/addcategory">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Add Product Category</span> </a>
-                  <a class="dropdown-item text-danger" href="/addproduct">
-                    <i class="material-icons text-danger">add_circle</i><span> Add Product</span></a>
-               
-                    <a class="dropdown-item text-danger" href="/productlist">
-                        <i class="material-icons text-danger">playlist_add_check</i><span>Product List</span> </a>
-                </div>
+                    </div>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -103,10 +76,9 @@
                     
                
                   <a class="dropdown-item text-danger" href="/report">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Show Reports</span> </a>
-                  <a class="dropdown-item text-danger" href="/stastics">
-                    <i class="material-icons text-danger">add_circle</i><span> Show Stastics</span></a>
-               
+                    <i class="material-icons text-danger">share
+                    </i><span> Show Reports</span> </a>
+                
                     </div>
               </li>
              
@@ -145,8 +117,8 @@
                       </div>
                       <div class="notification__content">
                         <span class="notification__category">Analytics</span>
-                        <p>Your website’s active users count increased by
-                          <span class="text-success text-semibold">28%</span> in the last week. Great job!</p>
+                        <p>No of transaction
+                          <span class="text-info text-semibold">280</span></p>
                       </div>
                     </a>
                     <a class="dropdown-item" href="#">
@@ -157,8 +129,8 @@
                       </div>
                       <div class="notification__content">
                         <span class="notification__category">Sales</span>
-                        <p>Last week your store’s sales count decreased by
-                          <span class="text-danger text-semibold">5.52%</span>. It could have been worse!</p>
+                        <p>To day Sale
+                          <span class="text-info text-semibold">5000</span></p>
                       </div>
                     </a>
                     <a class="dropdown-item notification__all text-center" href="#"> View all Notifications </a>
@@ -167,7 +139,7 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <img class="user-avatar rounded-circle mr-2" src="images/avatars/0.jpg" alt="User Avatar">
-                    <span class="d-none d-md-inline-block">Sierra Brooks</span>
+                    <span class="d-none d-md-inline-block"> <%= user.username %></span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
                     <a class="dropdown-item" href="user-profile-lite.html">
@@ -192,7 +164,7 @@
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <span class="text-uppercase page-subtitle">Dashboard</span>
-                <h3 class="page-title">Manage Shops</h3>
+                <h3 class="page-title">Manage Inventory/Alerts</h3>
               </div>
             </div>
             <!-- End Page Header -->
@@ -203,42 +175,28 @@
                 <div class="col py-5">
                     <div class="card card-small ">
                       <div class="card-header border-bottom">
-                        <h6 class="m-0">Shop Lists</h6>
+                        <h6 class="m-0">Inventory Alert List</h6>
                       </div>
                       <div class="card-body p-0 pb-3 text-center">
-                        <table class="table mb-0">
-                          <thead class="bg-light">
-                            <tr>
-                              <th scope="col" class="border-0">#</th>
-                              <th scope="col" class="border-0">ShopName</th>
-                              <th scope="col" class="border-0">ShopAddress</th>
-                              <th scope="col" class="border-0">PhoneNumber</th>
-                              <th scope="col" class="border-0">Action Todo</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <% if (shoplist.length >0){ %>
-                              <% var i =0 ;%>
-                              <% shoplist.forEach(function(row){ %>
-                                <% i++ %>
-                                <tr>
-                                  <td><%= i %></td>
-                                  <td><%= row.shopname %></td>
-                                  <td><%= row.shopaddress %></td>
-                                  <td><%= row.shoptelephone %></td>
-                                
-                                  <td><form action="/editsystemuser/<%=row.userid %>" method="post">
-                                <button type="submit" class="btn btn-block btn-sm btn-info">
-                                  EDIT
-                                </button>
-                                  </form></td>
-                                </tr>
-                             <% })} else { %>
+                        <% if (userlist.length >0){ %>
+                          <% var i =0 ;%>
+                          <% userlist.forEach(function(row){ %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            The product <%= row.productname %> is going to out of stock with the current quantity of 
+                            <%= row.quantity %> . please inform admin and increase your inventory.
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                          
+                            <!-- Button trigger modal -->
 
-                          <%  } %>
-                            
-                          </tbody>
-                        </table>
+
+<!-- Modal -->
+
+                         <% })} else { %>
+
+                      <%  } %>
                       </div>
                     </div>
                   </div>
