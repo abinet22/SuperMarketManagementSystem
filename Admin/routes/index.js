@@ -9,7 +9,71 @@ const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 router.get('/', forwardAuthenticated, (req, res) => res.render('login'));
 router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
 router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
-router.get('/dashboard', ensureAuthenticated, (req, res) => res.render('dashboard'));
+router.get('/dashboard', ensureAuthenticated, async function(req, res) {
+  var d =  new Date();
+  var dnow =  new Date();
+  var yest =  new Date(new Date().getTime() - 24*60*60*1000);
+  var lastweek =  new Date(new Date().getTime() - 24*60*60*1000*7);
+  var lastmonth =  new Date(new Date().getTime() - 24*60*60*1000*30);
+  var llweek =  new Date(new Date().getTime() - 24*60*60*1000*14);
+  var llmonth =  new Date(new Date().getTime() - 24*60*60*1000*60);
+  yest.setHours(0, 0, 0, 0);
+  d.getTime();
+  d.setHours(0, 0, 0, 0);
+
+  finalDate = d.toISOString().split('T')[0]+' '+d.toTimeString().split(' ')[0];
+  lastpost = dnow.toISOString().split('T')[0]+' '+dnow.toTimeString().split(' ')[0];
+  yestpost = yest.toISOString().split('T')[0]+' '+yest.toTimeString().split(' ')[0];
+  weekpost = lastweek.toISOString().split('T')[0]+' '+lastweek.toTimeString().split(' ')[0];
+  monthpost = lastmonth.toISOString().split('T')[0]+' '+lastmonth.toTimeString().split(' ')[0];
+  lweekpost = llweek.toISOString().split('T')[0]+' '+llweek.toTimeString().split(' ')[0];
+  lmonthpost = llmonth.toISOString().split('T')[0]+' '+llmonth.toTimeString().split(' ')[0];
+  var queries = [
+    "Select  COUNT(productid) as transCount,shopid from transaction where postdate between '"+ finalDate +"' and '"+ lastpost +"' GROUP BY shopid ORDER BY COUNT(productid) DESC ",
+   
+    "Select  SUM(total) as qty from transaction where postdate between '"+ finalDate +"' and '"+ lastpost +"'",
+    "Select  SUM(total) as qty from transaction where postdate between '"+ yest +"' and '"+ finalDate +"'",
+   
+    "Select  SUM(quantity) as qty,COUNT(productid) as transCount,shopid from inventorylog where postdate between '"+ finalDate +"' and '"+ lastpost +"' GROUP BY shopid,productid",
+    "Select  SUM(quantity) as qty from transaction where postdate between '"+ monthpost +"' and '"+ lastpost +"' && userid ='"+ req.user.userid+"'",
+    "Select  SUM(quantity) as qty from transaction where postdate between '"+ llweek +"' and '"+ weekpost +"' && userid ='"+ req.user.userid+"'",
+   
+    "Select  COUNT(productid) as transCount,SUM(quantity) as qty,description,shopid from transaction where postdate between '"+ finalDate +"' and '"+ lastpost +"' GROUP BY productid,shopid ORDER BY COUNT(productid) DESC ",
+    "Select  SUM(quantity) as qty ,shopid,description from transaction  where postdate between '"+ finalDate +"' and '"+ lastpost +"'GROUP BY shopid,productid ORDER BY SUM(quantity) ASC LIMIT 10",
+    "Select  SUM(quantity) as qty ,shopid,description from transaction where postdate between '"+ finalDate +"' and '"+ lastpost +"' GROUP BY shopid,productid ORDER BY SUM(quantity) DESC LIMIT 10",
+    "Select  SUM(total) as total,shopid from transaction where postdate between '"+ finalDate +"' and '"+ lastpost +"' GROUP BY shopid ORDER BY quantity DESC ",
+    "Select  * from shops",
+   
+ 
+  ];
+    
+    connection.query(queries.join(';'), function (error, results, fields) {
+    
+    if (error) throw error;
+    
+  console.log( results[3]);
+    res.render('dashboard', {
+      frequency: results[0], // First query from array
+
+      todaysale: results[1],
+      yeserday: results[2],
+
+      weekday: results[3],
+      monthday: results[4],
+      lweekday: results[5],
+
+
+      frequntlysold: results[6],
+      listsoldqty: results[7],
+      mostsoldbyshop: results[8],
+      totalsalebyshop: results[9],
+      shoplist: results[10],
+     
+      user:req.user      // Second query from array
+    });
+    
+    });
+});
 router.get('/adduser', ensureAuthenticated, async function(req, res) {
   connection.query('Select * from shops', function(error, results, fields) {
     if (error) 
@@ -342,7 +406,7 @@ if (errors.length > 0) {
  }
    
 });
-router.post('/addnewproduct',async function(req,res)
+router.post('/addnewproduct',async function(req,res) 
 {
     const {proname,procategory,price} = req.body;
 let errors = [];

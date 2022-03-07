@@ -21,7 +21,7 @@
         <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
           <div class="main-navbar">
             <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
-              <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
+              <a class="navbar-brand w-100 mr-0" href="/" style="line-height: 25px;">
                 <div class="d-table m-auto">
                   <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="images/shards-dashboards-logo.svg" alt="Shards Dashboard">
                   <span class="d-none d-md-inline ml-1">SISMS </span>
@@ -204,40 +204,91 @@
               </nav>
             </nav>
           </div>
+          <% var shops; %>  
+          <% if (shoplist.length >0){ %>
+            <% shops = shoplist; %>
+            <% shoplist.forEach(function(row){ %>
+            
+               
+          <% })} else { %>
+
+       <%  } %>
           <!-- / .main-navbar -->
           <div class="main-content-container container-fluid px-4">
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <span class="text-uppercase page-subtitle">Dashboard</span>
-                <h3 class="page-title">Overview</h3>
+                <h3 class="page-title">Overview/ToDay</h3>
               </div>
             </div>
             <!-- End Page Header -->
             <!-- Small Stats Blocks -->
             <div class="row">
-              <div class="col-lg col-md-6 col-sm-6 mb-4">
+              <% if (todaysale.length >0){ %>
+                <% var tds ;%>
+          
+                <% todaysale.forEach(function(row){ %>
+               
+                  <% tds = row.qty ; %>
+                
+               <% })} else { %>
+  
+            <%  } %>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Total Sales</span>
-                        <h6 class="stats-small__value count my-3">2,390</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase">4.7%</span>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-1"></canvas>
-                  </div>
+                  <% if (yeserday.length >0){ %>
+                    <% var yds ;%>
+              
+                    <% yeserday.forEach(function(row){ %>
+                   
+                      <% yds = row.qty ; %>
+                      
+                      <%  if(yds >tds) { %>
+                        <% var per = 100 - (tds * 100 / yds )%>
+                        <div class="card-body p-0 d-flex">
+                          <div class="d-flex flex-column m-auto">
+                            <div class="stats-small__data text-center">
+                              <span class="stats-small__label text-uppercase">Today Sale</span>
+                              <h6 class="stats-small__value count my-3"><%= tds %></h6>
+                            </div>
+                          
+                            <div class="stats-small__data">
+                              <span class="stats-small__percentage stats-small__percentage--decrease"><%= per %></span>
+                            </div>
+                          </div>
+                          <canvas height="120" class="blog-overview-stats-small-4"></canvas>
+                        </div>
+                        <%  }else{ %>
+                          <% var per = 100 - (yds * 100 / tds ) %>
+                          <div class="card-body p-0 d-flex">
+                            <div class="d-flex flex-column m-auto">
+                              <div class="stats-small__data text-center">
+                                <span class="stats-small__label text-uppercase">Today Sale</span>
+                                <h6 class="stats-small__value count my-3"><%= tds %></h6>
+                              </div>
+                            
+                              <div class="stats-small__data">
+                                <span class="stats-small__percentage stats-small__percentage--increase"><%= per %> </span>
+                              </div>
+                            </div>
+                            <canvas height="120" class="blog-overview-stats-small-2"></canvas>
+                          </div>
+                          <%   } %>
+                    
+                   <% })} else { %>
+      
+                <%  } %>
+                 
+               
                 </div>
               </div>
-              <div class="col-lg col-md-6 col-sm-6 mb-4">
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
                   <div class="card-body p-0 d-flex">
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Top Sold Product</span>
+                        <span class="stats-small__label text-uppercase">Today Product Purchase,Amount</span>
                         <h6 class="stats-small__value count my-3">182</h6>
                       </div>
                       <div class="stats-small__data">
@@ -252,115 +303,201 @@
                 <div class="stats-small stats-small--1 card card-small">
                   <div class="card-body p-0 d-flex">
                     <div class="d-flex flex-column m-auto">
+                   
+                       
                       <div class="stats-small__data text-center">
+                       
                         <span class="stats-small__label text-uppercase">Total Transaction</span>
-                        <h6 class="stats-small__value count my-3">8,147</h6>
+                  
                       </div>
                       <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--decrease">3.8%</span>
-                      </div>
+                        <ul class="list-group list-group-small list-group-flush">
+                          <% if (frequency.length >0){ %>
+                            <% var tds ;%>
+                            <% var sum ;%>
+                            <% frequency.forEach(function(row){ %>
+                              <% var shopid = row.shopid ; %>
+                              <% tds = row.transCount ; %>
+                              <% shops.forEach(function(row){ %>
+                                <% var shopids =  row.shopid %>
+                                <% var shopname =  row.shopname %>
+                                <% if(shopid === shopids ) {%>
+                                    <li class="list-group-item d-flex px-3">
+                                    <span class="text-semibold text-fiord-blue"><%= row.shopname %></span>
+                                    <span class="ml-auto text-right text-semibold text-reagent-gray"><%= tds %></span>
+                                  </li>
+                                  <% }})%>
+                                  <% })} else { %>
+                     
+                               <%  } %>
+                         
+                        </ul>
+                       
+                        </div>
+                      
                     </div>
                     <canvas height="120" class="blog-overview-stats-small-3"></canvas>
                   </div>
                 </div>
               </div>
-              <div class="col-lg col-md-4 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Top Shop</span>
-                        <h6 class="stats-small__value count my-3">2,413</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase">12.4%</span>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-4"></canvas>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg col-md-4 col-sm-12 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Top Sale vs Top Shop</span>
-                        <h6 class="stats-small__value count my-3">17,281</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--decrease">2.4%</span>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-5"></canvas>
-                  </div>
-                </div>
-              </div>
+         
+          
             </div>
             <!-- End Small Stats Blocks -->
             <div class="row">
-              <!-- Users Stats -->
-              <div class="col-lg-8 col-md-12 col-sm-12 mb-4">
+            <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
                 <div class="card card-small">
                   <div class="card-header border-bottom">
-                    <h6 class="m-0">Sale</h6>
+                    <h6 class="m-0">Total Sale By Shop</h6>
                   </div>
-                  <div class="card-body pt-0">
-                    <div class="row border-bottom py-2 bg-light">
-                      <div class="col-12 col-sm-6">
-                        <div id="blog-overview-date-range" class="input-daterange input-group input-group-sm my-auto ml-auto mr-auto ml-sm-auto mr-sm-0" style="max-width: 350px;">
-                          <input type="text" class="input-sm form-control" name="start" placeholder="Start Date" id="blog-overview-date-range-1">
-                          <input type="text" class="input-sm form-control" name="end" placeholder="End Date" id="blog-overview-date-range-2">
-                          <span class="input-group-append">
-                            <span class="input-group-text">
-                              <i class="material-icons"></i>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-6 d-flex mb-2 mb-sm-0">
-                        <button type="button" class="btn btn-sm btn-white ml-auto mr-auto ml-sm-auto mr-sm-0 mt-3 mt-sm-0">View Full Report &rarr;</button>
-                      </div>
-                    </div>
-                    <canvas height="130" style="max-width: 100% !important;" class="blog-overview-users"></canvas>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                      <% if (totalsalebyshop.length >0){ %>
+                     
+                        <% totalsalebyshop.forEach(function(row){ %>
+                          <% var shopid =  row.shopid %>
+                          <% var total =  row.total %>
+                      <% shops.forEach(function(row){ %>
+                        <% var shopids =  row.shopid %>
+                        <% var shopname =  row.shopname %>
+                        <% if(shopid === shopids ) {%>
+                    
+                    <li class="list-group-item d-flex px-3">
+                      <span class="text-semibold text-fiord-blue"><%= shopname %></span>
+                      <span class="ml-auto text-right text-semibold text-reagent-gray"><%= total %></span>
+                    </li>
+                    <% }%>
+                  
+                    <% }) %>
+                    
+                      <% })} else { %>
+         
+                   <%  } %>
+                    </ul>
                   </div>
+                
                 </div>
               </div>
-              <!-- End Users Stats -->
-              <!-- Users By Device Stats -->
-              <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                <div class="card card-small h-100">
+              <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small">
                   <div class="card-header border-bottom">
-                    <h6 class="m-0">Shop By Sales</h6>
+                    <h6 class="m-0">Most Sold Product</h6>
                   </div>
-                  <div class="card-body d-flex py-0">
-                    <canvas height="220" class="blog-users-by-device m-auto"></canvas>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                      <% var shopids; %>
+                      <% if (mostsoldbyshop.length >0){ %>
+                     
+                        <% mostsoldbyshop.forEach(function(row){ %>
+                          <% var shopid =  row.shopid; %>
+                          <% var total =  row.qty; %>
+                          <% var proname =  row.description; %>
+                      <% shops.forEach(function(row){ %>
+                        <% var shopids = row.shopid; %>
+                        <% var shopname =  row.shopname; %>
+                        <% if(shopid === shopids ) {%>
+                    
+                    <li class="list-group-item d-flex px-3">
+                      <span class="text-semibold text-fiord-blue"><%= shopname %>,</span>
+                      <span class="ml-auto text-right text-semibold text-reagent-gray"><%= proname %></span>
+              
+                      <span class="ml-auto text-right text-semibold text-reagent-gray"><%= total %></span>
+                    </li>
+                    <% }%>
+                  
+                    <% }) %>
+                    
+                      <% })} else { %>
+         
+                   <%  } %>
+                    </ul>
                   </div>
-                  <div class="card-footer border-top">
-                    <div class="row">
-                      <div class="col">
-                        <select class="custom-select custom-select-sm" style="max-width: 130px;">
-                          <option selected>Last Week</option>
-                          <option value="1">Today</option>
-                          <option value="2">Last Month</option>
-                          <option value="3">Last Year</option>
-                        </select>
-                      </div>
-                      <div class="col text-right view-report">
-                        <a href="#">Full report &rarr;</a>
-                      </div>
-                    </div>
-                  </div>
+               
                 </div>
               </div>
-          
+              <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">List Sold Product</h6>
+                  </div>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                      <% var shopids; %>
+                      <% if (listsoldqty.length >0){ %>
+                     
+                        <% listsoldqty.forEach(function(row){ %>
+                          <% var shopid =  row.shopid; %>
+                          <% var total =  row.qty; %>
+                          <% var proname =  row.description; %>
+                      <% shops.forEach(function(row){ %>
+                        <% var shopids = row.shopid; %>
+                        <% var shopname =  row.shopname; %>
+                        <% if(shopid === shopids ) {%>
+                    
+                    <li class="list-group-item d-flex px-3">
+                      <span class="text-semibold text-fiord-blue"><%= shopname %>,</span>
+                      <span class="ml-auto text-right text-semibold text-reagent-gray"><%= proname %></span>
+              
+                      <span class="ml-auto text-right text-semibold text-reagent-gray"><%= total %></span>
+                    </li>
+                    <% }%>
+                  
+                    <% }) %>
+                    
+                      <% })} else { %>
+         
+                   <%  } %>
+                    </ul>
+                  </div>
+                 
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">Frequncy of Transaction</h6>
+                  </div>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                   
+                      <% if (frequntlysold.length >0){ %>
+                     
+                        <% frequntlysold.forEach(function(row){ %>
+                          <% var shopid =  row.shopid; %>
+                          <% var count =  row.transCount; %>
+                          <% var total =  row.qty; %>
+                          <% var proname =  row.description; %>
+                      <% shops.forEach(function(row){ %>
+                        <% var shopids = row.shopid; %>
+                        <% var shopname =  row.shopname; %>
+                        <% if(shopid === shopids ) {%>
+                    
+                    <li class="list-group-item d-flex px-3">
+                      <span class="text-semibold text-fiord-blue"><%= shopname %>,</span>
+                      <span class="text-semibold text-fiord-blue text-center"><%= proname %></span>
+                      <span class="ml-auto text-right text-semibold text-reagent-gray"><%= count %></span>
+                      <span class="ml-auto text-right text-semibold text-reagent-gray"><%= total %></span>
+                    </li>
+                    <% }%>
+                  
+                    <% }) %>
+                    
+                      <% })} else { %>
+         
+                   <%  } %>
+                    </ul>
+                  </div>
+                
+                </div>
+              </div>
               <!-- End Top Referrals Component -->
             </div>
           </div>
+        
           <footer class="main-footer d-flex p-2 px-3 bg-white border-top">
        
             <span class="copyright ml-auto my-auto mr-2">Copyright © 2021
-              <a href="https://techlinktechnologies.com" rel="nofollow">TechLinkTechnologies</a>
+              <a href="https://techlinkethiopia.com" rel="nofollow">TechLinkTechnologies</a>
             </span>
           </footer>
         </main>
