@@ -546,9 +546,14 @@
             </div>
             <!-- End Page Header -->
             <!-- Small Stats Blocks -->
+            <div class="alert alert-dismissible fade show col-sm-12" role="alert" id="success" style="display:none;">
+              <p id="successmsg"></p>
+              <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button> -->
+            </div>
             <div class="row">
-              <%- include ('./partials/messages') %>
-                 
+             
              <div class="col-md-4">
               <div class="card">
                 <div class= "card-header">
@@ -579,56 +584,7 @@
                       <label for="exampleFormControlInput1">Product ID</label>
                       <input type="text" class="form-control" id="proid" name="proid" placeholder="Product ID" disabled>
                     </div>
-                    <script>
-                      function isNumberKey(evt)
-       {
-          var charCode = (evt.which) ? evt.which : evt.keyCode;
-          if (charCode != 46 && charCode > 31 
-            && (charCode < 48 || charCode > 57))
-          
-             return false;
-
-          return true;
-       }
-                       
-                      function onproductnameselect(selectObject) {
-    var value = selectObject.value; 
-    let nameobj= '<%- JSON.stringify(proid) %>';  
-   
-   let name =  JSON.parse(nameobj);
-    if(name.length > 0)
-    {
-      for(var i = 0; i < name.length; i++)
-{
-  var proname  = name[i].productname;
-  if(proname === value)
-       {
-        var id = name[i].proid;
-        var price = name[i].price;
-           document.getElementById('proid').value = id;
-           document.getElementById('price').value = price;
-      }
-    //alert(name[i].productname);
-}
-     // alert(name);
-    //   name.forEach(function(row) {
-    //   var proname = row.productname ;
-    //  // alert(proname);
-    
-    //     if(proname = value)
-    //     {
-    //       var id = row.productname;
-       
-    //       document.getElementById('proid').value = id;
-    //     }
-        
-    //   });
-    
-     }
-  
-  
-  }
-                   </script>
+              
                      <div class="form-group">
                       <label for="exampleFormControlInput1">Price</label>
                       <input type="text" class="form-control" id="price" name="price" placeholder="Price" disabled>
@@ -642,6 +598,7 @@
        <input type="button" class="btn btn-lg btn-block btn-primary" id="addRow" value="Add To Cart" onclick="addRow()">
                   
                 </div>
+
             </div>
              </div>
              <div class="card col-md-8">
@@ -687,44 +644,50 @@
             <!-- End Small Stats Blocks -->
           
            <div class="row">
-            <p>
-              <!-- <input type="button" id="addRow" value="Add New Row" onclick="addRow()" /> -->
-              </p>
-              
-              <!-- <div id="cont"></div>   -->
-              
-              <!-- <p>
-              <input type="button" id="bt" value="Submit Data" onclick="submit()" />
-              </p> -->
+          
            </div>
            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
            <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.4.0/jquery.json.min.js"></script>
-       
+           <script>
+            function isNumberKey(evt)
+{
+var charCode = (evt.which) ? evt.which : evt.keyCode;
+if (charCode != 46 && charCode > 31 
+  && (charCode < 48 || charCode > 57))
+
+   return false;
+
+return true;
+}
+             
+            function onproductnameselect(selectObject) {
+var value = selectObject.value; 
+let nameobj= '<%- JSON.stringify(proid) %>';  
+
+let name =  JSON.parse(nameobj);
+if(name.length > 0)
+{
+for(var i = 0; i < name.length; i++)
+{
+var proname  = name[i].productname;
+if(proname === value)
+{
+var id = name[i].proid;
+var price = name[i].price;
+ document.getElementById('proid').value = id;
+ document.getElementById('price').value = price;
+}
+//alert(name[i].productname);
+}
+
+
+}
+
+
+}
+         </script>
            <script>
           
-                    // function readTblValues()
-                    // {
-                    //  // arrHead = ['', 'Product Description', 'UnitPrice','Quanity', 'Total'];
-                    //     var TableData = '';
-            
-                    //     $('#tbTableValues').val('');    // clear textbox
-                    //     $('#empTable tr').each(function (row, tr) {
-                    //         TableData = TableData
-                    //                 + $(tr).find('td:eq(1)').text() + ' '  // Task No.
-                    //                 + $(tr).find('td:eq(2)').text() + ' '  // Date
-                    //                 + $(tr).find('td:eq(3)').text() + ' '  // Description
-                    //                 + $(tr).find('td:eq(4)').text() + ' '  // Task
-                    //                 + '\n';
-                    //     });
-                    //     $('#tbTableValues').html(TableData);
-                    // }
-            
-                    // function storeAndShowTableValues()
-                    // {
-                    //     var TableData;
-                    //     TableData = storeTblValues();
-                    //     $('#tbTableValuesArray').html('<br>JS Array: <br>' + print_r(TableData));
-                    // }
                     function storeTblValues()
                     {
                         var TableData = new Array();
@@ -779,9 +742,41 @@
                             url: "/addnewtransaction",
                             data: "pTableData=" + TableData,    // post TableData to server script
             
-                            success: function (msg) {
-                                // return value stored in msg variable 
-                                $('#tbServerResponse').html('Server Response:<br><br><pre>' + msg + '</pre>');
+                            success: function (data) {
+                              if(data.messages == 'success'){ // if true (1)
+                                var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className="alert-success";
+    msg.innerHTML="You are successfully add new sale data!"
+      setTimeout(function(){// wait for 5 secs(2)
+           location.reload(); // then reload the page.(3)
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
+      // setTimeout(function(){// wait for 5 secs(2)
+      //      location.reload(); // then reload the page.(3)
+      // }, 1000); 
+   }
+   else{
+    var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className = "alert-danger";
+    msg.innerHTML="Something is wrong please try later!"
+      setTimeout(function(){// wait for 5 secs(2)
+           location.reload(); // then reload the page.(3)
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
+   
+   }
                             }
                         });
                     }
@@ -801,35 +796,10 @@
                                 $('#tbServerResponse').html('Server Response:<br><br><pre>' + msg + '</pre>');
                             }
                         });
+                      
                     }
             
             
-                    // function print_r(arr, level) {
-                    //     var dumped_text = "";
-                    //     if (!level)
-                    //         level = 0;
-            
-                    //     //The padding given at the beginning of the line.
-                    //     var level_padding = "";
-                    //     for (var j = 0; j < level + 1; j++)
-                    //         level_padding += "    ";
-            
-                    //     if (typeof (arr) === 'object') { //Array/Hashes/Objects 
-                    //         for (var item in arr) {
-                    //             var value = arr[item];
-            
-                    //             if (typeof (value) === 'object') { //If it is an array,
-                    //                 dumped_text += level_padding + "'" + item + "' \n";
-                    //                 dumped_text += print_r(value, level + 1);
-                    //             } else {
-                    //                 dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
-                    //             }
-                    //         }
-                    //     } else { //Stings/Chars/Numbers etc.
-                    //         dumped_text = "===>" + arr + "<===(" + typeof (arr) + ")";
-                    //     }
-                    //     return dumped_text;
-                    // }
                 </script>
          
            <script type="text/javascript">

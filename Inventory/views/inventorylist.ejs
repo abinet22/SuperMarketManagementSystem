@@ -78,8 +78,6 @@
                   <a class="dropdown-item text-danger" href="/report">
                     <i class="material-icons text-danger">share
                     </i><span> Show Reports</span> </a>
-                  <a class="dropdown-item text-danger" href="/stastics">
-                    <i class="material-icons text-danger">timeline</i><span> Show Stastics</span></a>
                
                     </div>
               </li>
@@ -216,10 +214,16 @@
             },
             'columns':
                 [
-                { 'data': 'productid', "defaultContent": "", 'name': 'ProductId' },
+                { 'data': 'productid', "defaultContent": "", 'name': 'ProductId'},
                 { 'data': 'procategory', "defaultContent": "", 'name': 'ProductCategory' },
                 { 'data': 'productname', "defaultContent": "", 'name': 'ProductName' },
-                { 'data': 'quantity', "defaultContent": "", 'name': 'Quantity' }
+                { 'data': 'quantity', "defaultContent": "", 'name': 'Quantity' ,"render": function(data, type, row, meta) {
+
+if( data < 100 ) {
+    data = '<h5 class="text-danger">' + data  + '</h5>';
+}
+return data;
+}}
                 ],
             "columnDefs": [
                 {
@@ -227,7 +231,9 @@
                     "orderable": false,
                     "targets": 0
                 }
-            ]
+            ],
+        
+            
 });
            });
          </script>

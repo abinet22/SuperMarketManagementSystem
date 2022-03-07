@@ -10,19 +10,27 @@ router.get('/', forwardAuthenticated, (req, res) => res.render('login'));
 router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
 router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
 router.get('/dashboard', ensureAuthenticated, async function (req, res) {
-  connection.query('Select * from productlist', function(error, results, fields) {
-    if (error) 
-        {
-            console.log(error);
-        }
-    else
-    {
-      //console.log(results);
-      res.render('dashboard',{productlist:results,
-      user:req.user
-      })
-    }
-  });
+
+
+  var queries = [
+    "Select * from productlist",
+      "Select * from productcategory",
+      "Select * from inventory where shopid='"+ req.user.assignshop+"'",
+    ];
+    
+    connection.query(queries.join(';'), function (error, results, fields) {
+    
+    if (error) throw error;
+   
+    res.render('dashboard', {
+      productlist: results[0], // First query from array
+      procategory: results[1],
+      inventory:results[2],
+      user:req.user      // Second query from array
+    });
+    
+    });
+
 });
 
 router.get('/inventorylist', ensureAuthenticated, async function(req, res)
@@ -49,20 +57,69 @@ router.get('/inventoryalert', ensureAuthenticated, async function(req, res) {
 
 
 router.get('/report', ensureAuthenticated, async function(req, res) {
-  connection.query('Select * from inventory', function(error, results, fields) {
-    if (error) 
-        {
-            console.log(error);
-        }
-    else
-    {
-      console.log(results);
-      res.render('report',{
-        shoplist:results,
-        user:req.user
-           })
-    }
-  });
+  var d =  new Date();
+  var dnow =  new Date();
+  var yest =  new Date(new Date().getTime() - 24*60*60*1000);
+  var lastweek =  new Date(new Date().getTime() - 24*60*60*1000*7);
+  var lastmonth =  new Date(new Date().getTime() - 24*60*60*1000*30);
+  var llweek =  new Date(new Date().getTime() - 24*60*60*1000*14);
+  var llmonth =  new Date(new Date().getTime() - 24*60*60*1000*60);
+  yest.setHours(0, 0, 0, 0);
+  d.getTime();
+  d.setHours(0, 0, 0, 0);
+
+  finalDate = d.toISOString().split('T')[0]+' '+d.toTimeString().split(' ')[0];
+  lastpost = dnow.toISOString().split('T')[0]+' '+dnow.toTimeString().split(' ')[0];
+  yestpost = yest.toISOString().split('T')[0]+' '+yest.toTimeString().split(' ')[0];
+  weekpost = lastweek.toISOString().split('T')[0]+' '+lastweek.toTimeString().split(' ')[0];
+  monthpost = lastmonth.toISOString().split('T')[0]+' '+lastmonth.toTimeString().split(' ')[0];
+  lweekpost = llweek.toISOString().split('T')[0]+' '+llweek.toTimeString().split(' ')[0];
+  lmonthpost = llmonth.toISOString().split('T')[0]+' '+llmonth.toTimeString().split(' ')[0];
+  var queries = [
+    "Select  COUNT(productid) as transCount,description, productid from transaction where shopid='"+req.user.assignshop+"' GROUP BY productid ORDER BY COUNT(productid) DESC ",
+    "Select  SUM(quantity) as qty from transaction where postdate between '"+ finalDate +"' and '"+ lastpost +"' && userid ='"+ req.user.userid+"'",
+    "Select  SUM(quantity) as qty from transaction where postdate between '"+ yest +"' and '"+ finalDate +"' && userid ='"+ req.user.userid+"'",
+    "Select  SUM(quantity) as qty from transaction where postdate between '"+ weekpost +"' and '"+ lastpost +"' && userid ='"+ req.user.userid+"'",
+    "Select  SUM(quantity) as qty from transaction where postdate between '"+ monthpost +"' and '"+ lastpost +"' && userid ='"+ req.user.userid+"'",
+    "Select  SUM(quantity) as qty from transaction where postdate between '"+ llweek +"' and '"+ weekpost +"' && userid ='"+ req.user.userid+"'",
+    "Select  SUM(quantity) as qty from transaction where postdate between '"+ llmonth +"' and '"+ monthpost +"' && userid ='"+ req.user.userid+"'",
+    "Select  SUM(quantity) as qty,description from transaction where shopid='"+req.user.assignshop+"' GROUP BY productid ORDER BY SUM(quantity) DESC LIMIT 10",
+    "Select  COUNT(productid) as transCount,description from transaction where shopid='"+req.user.assignshop+"' GROUP BY productid ORDER BY COUNT(productid) DESC LIMIT 10",
+    "Select  quantity,productname from inventory where shopid='"+req.user.assignshop+"'  ORDER BY quantity DESC LIMIT 10",
+    "Select  quantity,productname from inventory where shopid='"+req.user.assignshop+"' ORDER BY quantity ASC LIMIT 10",
+ 
+  ];
+    // console.log("today",finalDate);
+    // console.log("lastpst",lastpost);
+    // console.log("yest",yestpost);
+    // console.log("lweek",weekpost);
+    // console.log("lmon",monthpost);
+    // console.log("llweek",lweekpost);
+    // console.log("llmon",lmonthpost);
+    connection.query(queries.join(';'), function (error, results, fields) {
+    
+    if (error) throw error;
+    console.log("dessm",results[9]);
+    console.log("acesm",results[10]);
+    // console.log(yestpost);
+    //  console.log(req.user.userid);
+    // console.log(results[0]);
+    res.render('report', {
+      frequency: results[0], // First query from array
+      todaysale: results[1],
+      yeserday: results[2],
+      weekday: results[3],
+      monthday: results[4],
+      lweekday: results[5],
+      lmonthday: results[6],
+      mostsoldqty: results[7],
+      mostfreqently: results[8],
+      largeqty: results[9],
+      smallqty: results[10],
+      user:req.user      // Second query from array
+    });
+    
+    });
   
   });
 router.get('/stastics', ensureAuthenticated, async function(req, res)  {
@@ -89,78 +146,83 @@ router.get('/logout', (req, res) => {
   });
   
 
-router.post('/addnewtransaction',async function(req,res)
+router.post('/addnewinventorylist',async function(req,res)
 {
     const {pTableData} = req.body;
-    console.log(pTableData);
-let errors = [];
-var productlist =[];
-connection.query('Select * from productlist', function(error, results, fields) {
-  if (error) 
-      {
-        errors.push({ msg: 'Please add all required fields' });
-      }
-  else
-  {
-    productlist = results;
-  }
-});
-var values = [];
+   // console.log(pTableData);
+ 
+const postdate = new Date();
+  var values = [];
+  var inventory = [];
 const copyItems = [];
 myObj = JSON.parse(pTableData);
-
-// before
 for (let i = 0; i < myObj.length; i++) {
   copyItems.push(myObj[i]);
 }
-const datetrans = new Date();
-const v1options = {
-  node: [0x01, 0x23],
-  clockseq: 0x1234,
-  msecs: new Date('2011-11-01').getTime(),
-  nsecs: 5678,
-};
-transid = uuidv4(v1options);
+  if(copyItems.length >0)
+  {
 
-// after
 copyItems.forEach((item) => {
-  //console.log(item.UnitPrice);
-  values.push([req.user.userid,req.user.assignshop,transid,item.ProductId,item.ProductDescription,item.UnitPrice,item.Quanity,item.Total,datetrans]);
- 
-  var sql = "INSERT INTO transaction (userid,shopid,transactionid,productid, description, price ,quantity ,total,postdate) VALUES ?";
-  connection.query(sql,[values], function (err, result) {
-    if (err) throw err;
-    console.log("1 record inserted");
+  //console.log(item.UnitPrice); item.ShelveNumber 
+  var productid  = item.ProductId ;
+  inventory.push([req.user.assignshop,req.user.assignshop,item.ProductId,"catid",item.ProductCategory,item.ProductDescription,item.NewQuantity,item.ShelveNumber,postdate]);
 
-  });
+  values.push([req.user.userid,req.user.assignshop,item.ProductId,item.ProductCategory,item.ProductDescription,item.NewQuantity,item.BuyingPrice,postdate]);
 
-  var sqludt = "UPDATE inventory SET quantity = quantity - "+ item.Quanity +" WHERE productid = "+ "'"+ item.ProductId +"'" + " && shopid = '"+ req.user.assignshop + "'";
-  connection.query(sqludt, function (err, result) {
-    if (err) throw err;
-    console.log(result.affectedRows + " record(s) updated");
-  });
-  // connection.query('INSERT INTO transaction(userid,shopid,transactionid,productid, description, price ,quantity ,'+
-  //   ' total,postdate) VALUES ?', [values], function(err,result) {
-  //   if(err) {
-  //     res.render('dashboard',{
-  //       productlist:productlist,
-  //       user:req.user,
-  //       error_msg:'Something is wrong please try later'
-  //     });
-
-  //   }
-  //  else {
+  connection.query("Select * from inventory where shopid='"+ req.user.assignshop +"' && productid='"+ productid +"'", function (error, results, fields) {
+        
+    if (error)
+    {
+      res.json({messages:'error'});  
+    }
+   else if(results.length == 0)
+    {
   
-  //   }
-  // });
-
+      connection.query('INSERT INTO inventory (inventoryid,shopid,productid,procategoryid, procategory ,productname ,quantity,shelfno,postdate) VALUES(?,?,?,?,?,?,?,?,?)',[req.user.assignshop,req.user.assignshop,item.ProductId,"catid",item.ProductCategory,item.ProductDescription,item.NewQuantity,item.ShelveNumber,postdate], function (error, results, fields) {
+  
+        if (error) {
+          res.json({messages:'error'});  
+        }
+        connection.query('INSERT INTO inventorylog (userid,shopid,productid, procategory ,productname ,quantity,buyingprice,postdate)  VALUES (?,?,?,?,?,?,?,?)',[ req.user.userid,req.user.assignshop,item.ProductId,item.ProductCategory,item.ProductDescription,item.NewQuantity,item.BuyingPrice,postdate], function(err,result) {
+          if (error) 
+          {
+            res.json({messages:'error'});  
+          }
+        
+         
+        }); 
+       
+        
+        });
+   
+    }
+    else{
+      var sqludt = "UPDATE inventory SET quantity = quantity + "+ item.NewQuantity +" WHERE productid = "+ "'"+ item.ProductId +"'" + " && shopid = '"+ req.user.assignshop + "'";
+      connection.query(sqludt, function (error, results, fields) {
+  
+        if (error){
+          res.json({messages:'error'});  
+        }
+        connection.query('INSERT INTO inventorylog (userid,shopid,productid, procategory ,productname ,quantity,buyingprice,postdate)  VALUES (?,?,?,?,?,?,?,?)',[ req.user.userid,req.user.assignshop,item.ProductId,item.ProductCategory,item.ProductDescription,item.NewQuantity,item.BuyingPrice,postdate], function(err,result) {
+          if (error) {
+            res.json({messages:'error'});  
+          }
+        
+        
+        }); 
+       
+        
+        });
+     
+    }
+    });
+    res.json({messages:'success'});  
 });
+  }
+  else{
+    res.json({messages:'error'});  
+  }
 
-res.render('dashboard',{
-  productlist:productlist,
-  user:req.user,
-  success_msg:'You are successfully add new transaction'
-});
 
    
 });

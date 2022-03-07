@@ -78,9 +78,7 @@
                   <a class="dropdown-item text-danger" href="/report">
                     <i class="material-icons text-danger">share
                     </i><span> Show Reports</span> </a>
-                  <a class="dropdown-item text-danger" href="/stastics">
-                    <i class="material-icons text-danger">timeline</i><span> Show Stastics</span></a>
-               
+                
                     </div>
               </li>
              
@@ -170,84 +168,221 @@
             </div>
             <!-- End Page Header -->
             <!-- Small Stats Blocks -->
+            <% if (frequency.length >0){ %>
+              <% var max = 0 ;%>
+              <% var min=0 ;%>
+              <% var description =""; %>
+              <% var description2 =""; %>
+              <% frequency.forEach(function(row){ %>
+             
+                <% var count = row.transCount ; %>
+                <% if (count > max){ %>
+                  <% max = count; %>
+                  <% description = row.description; %>
+                  <% } else{ %>
+                    
+                    <% min = count; %>
+                    <% description2 = row.description; %>
+             <% }})} else { %>
+
+          <%  } %>
+
+
+            <!-- End Small Stats Blocks -->
             <div class="row">
               <div class="col-lg col-md-6 col-sm-6 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                  <div class="card-body p-0 d-flex">
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Posts</span>
-                        <h6 class="stats-small__value count my-3">2,390</h6>
+                        <span class="stats-small__label text-uppercase">Most Sold Product</span>
+                        <h6 class="stats-small__value count my-3"><%= max %></h6>
                       </div>
                       <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase">4.7%</span>
+                        <span class="stats-small__percentage stats-small__percentage--increase  text-uppercase"><%= description %></span>
                       </div>
                     </div>
-                    <canvas height="103" class="blog-overview-stats-small-1 chartjs-render-monitor" width="259" style="display: block; width: 259px; height: 103px;"></canvas>
+                    <canvas height="120" class="blog-overview-stats-small-1"></canvas>
                   </div>
                 </div>
               </div>
               <div class="col-lg col-md-6 col-sm-6 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                  <div class="card-body p-0 d-flex">
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Pages</span>
-                        <h6 class="stats-small__value count my-3">182</h6>
+                        <span class="stats-small__label text-uppercase">List Sold Product</span>
+                        <h6 class="stats-small__value count my-3"><%=min %></h6>
                       </div>
                       <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase">12.4%</span>
+                        <span class="stats-small__percentage stats-small__percentage--decrease  text-uppercase"><%= description2 %></span>
                       </div>
                     </div>
-                    <canvas height="103" class="blog-overview-stats-small-2 chartjs-render-monitor" width="259" style="display: block; width: 259px; height: 103px;"></canvas>
+                    <canvas height="120" class="blog-overview-stats-small-3"></canvas>
                   </div>
                 </div>
               </div>
               <div class="col-lg col-md-4 col-sm-6 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                  <div class="card-body p-0 d-flex">
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Comments</span>
-                        <h6 class="stats-small__value count my-3">8,147</h6>
+                        <span class="stats-small__label text-uppercase">Frequently Sold Product</span>
+                        <h6 class="stats-small__value count my-3"><%=max %></h6>
                       </div>
                       <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--decrease">3.8%</span>
+                        <span class="stats-small__percentage stats-small__percentage--increase"><%= description %></span>
                       </div>
                     </div>
-                    <canvas height="65" class="blog-overview-stats-small-3 chartjs-render-monitor" width="163" style="display: block; width: 163px; height: 65px;"></canvas>
+                    <canvas height="120" class="blog-overview-stats-small-2"></canvas>
                   </div>
                 </div>
               </div>
+              <% if (todaysale.length >0){ %>
+                <% var tds ;%>
+          
+                <% todaysale.forEach(function(row){ %>
+               
+                  <% tds = row.qty ; %>
+                
+               <% })} else { %>
+  
+            <%  } %>
               <div class="col-lg col-md-4 col-sm-6 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                  <% if (yeserday.length >0){ %>
+                    <% var yds ;%>
+              
+                    <% yeserday.forEach(function(row){ %>
+                   
+                      <% yds = row.qty ; %>
+                      
+                      <%  if(yds >tds) { %>
+                        <% var per = 100 - (tds * 100 / yds )%>
+                        <div class="card-body p-0 d-flex">
+                          <div class="d-flex flex-column m-auto">
+                            <div class="stats-small__data text-center">
+                              <span class="stats-small__label text-uppercase">Today Sale</span>
+                              <h6 class="stats-small__value count my-3"><%= tds %></h6>
+                            </div>
+                          
+                            <div class="stats-small__data">
+                              <span class="stats-small__percentage stats-small__percentage--decrease"><%= per %></span>
+                            </div>
+                          </div>
+                          <canvas height="120" class="blog-overview-stats-small-4"></canvas>
+                        </div>
+                        <%  }else{ %>
+                          <% var per = 100 - (yds * 100 / tds ) %>
+                          <div class="card-body p-0 d-flex">
+                            <div class="d-flex flex-column m-auto">
+                              <div class="stats-small__data text-center">
+                                <span class="stats-small__label text-uppercase">Today Sale</span>
+                                <h6 class="stats-small__value count my-3"><%= tds %></h6>
+                              </div>
+                            
+                              <div class="stats-small__data">
+                                <span class="stats-small__percentage stats-small__percentage--increase"><%= per %> </span>
+                              </div>
+                            </div>
+                            <canvas height="120" class="blog-overview-stats-small-5"></canvas>
+                          </div>
+                          <%   } %>
+                    
+                   <% })} else { %>
+      
+                <%  } %>
+                 
+               
+                </div>
+              </div>
+              <% if (weekday.length >0){ %>
+                <% var tws ;%>
+          
+                <% weekday.forEach(function(row){ %>
+               
+                  <% tws = row.qty ; %>
+                
+               <% })} else { %>
+                <% tws = 0 ; %>
+            <%  } %>
+            <% if (monthday.length >0){ %>
+              <% var tms ;%>
+        
+              <% monthday.forEach(function(row){ %>
+             
+                <% tms = row.qty ; %>
+              
+             <% })} else { %>
+              <% tms =0 ; %>
+          <%  } %>
+       
+      
+              <div class="col-lg col-md-4 col-sm-12 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex">
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Users</span>
-                        <h6 class="stats-small__value count my-3">2,413</h6>
+                        <span class="stats-small__label text-uppercase">This Week Sale</span>
+                        <h6 class="stats-small__value count my-3"><%= tws%></h6>
                       </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase">12.4%</span>
-                      </div>
+                      <% if (lweekday.length >0){ %>
+                        <% var lws ;%>
+                        <% var perw ;%>
+                        <% lweekday.forEach(function(row){ %>
+                       
+                          <% lws = row.qty ; %>
+                          <% if(lws>tws){ %>
+                            <% perw = 100 - (tws*100/lws) %>
+                            <div class="stats-small__data">
+                              <span class="stats-small__percentage stats-small__percentage--decrease"><%= perw %></span>
+                            </div>
+                            <% }else{ %>
+                              <% perw = 100 - (lws*100/tws) %>
+                              <div class="stats-small__data">
+                                <span class="stats-small__percentage stats-small__percentage--increase"><%= perw %></span>
+                              </div>
+                              <% } %>
+                       <% })} else { %>
+              
+                    <%  } %>
+                     
                     </div>
-                    <canvas height="65" class="blog-overview-stats-small-4 chartjs-render-monitor" width="163" style="display: block; width: 163px; height: 65px;"></canvas>
+                    <canvas height="120" class="blog-overview-stats-small-4"></canvas>
                   </div>
                 </div>
               </div>
               <div class="col-lg col-md-4 col-sm-12 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                  <div class="card-body p-0 d-flex">
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">Subscribers</span>
-                        <h6 class="stats-small__value count my-3">17,281</h6>
+                        <span class="stats-small__label text-uppercase">This Month Sale</span>
+                        <h6 class="stats-small__value count my-3"><%= tms %></h6>
                       </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--decrease">2.4%</span>
-                      </div>
+                      <% if (lmonthday.length >0){ %>
+                        <% var lms ;%>
+                        <% var perm ;%>
+                        <% lmonthday.forEach(function(row){ %>
+                       
+                          <% lms = row.qty ; %>
+                          <% if(lms>tms){ %>
+                            <% perm = 100 - (tms*100/lms) %>
+                            <div class="stats-small__data">
+                              <span class="stats-small__percentage stats-small__percentage--decrease"><%= perm %></span>
+                            </div>
+                            <% }else{ %>
+                              <% perm = 100 - (lms*100/tms) %>
+                              <div class="stats-small__data">
+                                <span class="stats-small__percentage stats-small__percentage--increase"><%= perm %></span>
+                              </div>
+                              <% } %>
+                       <% })} else { %>
+            
+                    <%  } %>
+                    
                     </div>
-                    <canvas height="65" class="blog-overview-stats-small-5 chartjs-render-monitor" width="163" style="display: block; width: 163px; height: 65px;"></canvas>
+                    <canvas height="120" class="blog-overview-stats-small-4"></canvas>
                   </div>
                 </div>
               </div>
@@ -255,190 +390,99 @@
             <!-- End Small Stats Blocks -->
             <div class="row">
               <!-- Users Stats -->
-            
-              <!-- End Users By Device Stats -->
-              <!-- New Draft Component -->
-              <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                <!-- Quick Post -->
-                <div class="card card-small h-100">
-                  <div class="card-header border-bottom">
-                    <h6 class="m-0">New Draft</h6>
-                  </div>
-                  <div class="card-body d-flex flex-column">
-                    <form class="quick-post-form">
-                      <div class="form-group">
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Brave New World"> </div>
-                      <div class="form-group">
-                        <textarea class="form-control" placeholder="Words can be like X-rays if you use them properly..."></textarea>
-                      </div>
-                      <div class="form-group mb-0">
-                        <button type="submit" class="btn btn-accent">Create Draft</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <!-- End Quick Post -->
-              </div>
-              <!-- End New Draft Component -->
-              <!-- Discussions Component -->
-              <div class="col-lg-5 col-md-12 col-sm-12 mb-4">
-                <div class="card card-small blog-comments">
-                  <div class="card-header border-bottom">
-                    <h6 class="m-0">Discussions</h6>
-                  </div>
-                  <div class="card-body p-0">
-                    <div class="blog-comments__item d-flex p-3">
-                      <div class="blog-comments__avatar mr-3">
-                        <img src="images/avatars/1.jpg" alt="User avatar"> </div>
-                      <div class="blog-comments__content">
-                        <div class="blog-comments__meta text-muted">
-                          <a class="text-secondary" href="#">James Johnson</a> on
-                          <a class="text-secondary" href="#">Hello World!</a>
-                          <span class="text-muted">– 3 days ago</span>
-                        </div>
-                        <p class="m-0 my-1 mb-2 text-muted">Well, the way they make shows is, they make one show ...</p>
-                        <div class="blog-comments__actions">
-                          <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-white">
-                              <span class="text-success">
-                                <i class="material-icons">check</i>
-                              </span> Approve </button>
-                            <button type="button" class="btn btn-white">
-                              <span class="text-danger">
-                                <i class="material-icons">clear</i>
-                              </span> Reject </button>
-                            <button type="button" class="btn btn-white">
-                              <span class="text-light">
-                                <i class="material-icons">more_vert</i>
-                              </span> Edit </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="blog-comments__item d-flex p-3">
-                      <div class="blog-comments__avatar mr-3">
-                        <img src="images/avatars/2.jpg" alt="User avatar"> </div>
-                      <div class="blog-comments__content">
-                        <div class="blog-comments__meta text-muted">
-                          <a class="text-secondary" href="#">James Johnson</a> on
-                          <a class="text-secondary" href="#">Hello World!</a>
-                          <span class="text-muted">– 4 days ago</span>
-                        </div>
-                        <p class="m-0 my-1 mb-2 text-muted">After the avalanche, it took us a week to climb out. Now...</p>
-                        <div class="blog-comments__actions">
-                          <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-white">
-                              <span class="text-success">
-                                <i class="material-icons">check</i>
-                              </span> Approve </button>
-                            <button type="button" class="btn btn-white">
-                              <span class="text-danger">
-                                <i class="material-icons">clear</i>
-                              </span> Reject </button>
-                            <button type="button" class="btn btn-white">
-                              <span class="text-light">
-                                <i class="material-icons">more_vert</i>
-                              </span> Edit </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="blog-comments__item d-flex p-3">
-                      <div class="blog-comments__avatar mr-3">
-                        <img src="images/avatars/3.jpg" alt="User avatar"> </div>
-                      <div class="blog-comments__content">
-                        <div class="blog-comments__meta text-muted">
-                          <a class="text-secondary" href="#">James Johnson</a> on
-                          <a class="text-secondary" href="#">Hello World!</a>
-                          <span class="text-muted">– 5 days ago</span>
-                        </div>
-                        <p class="m-0 my-1 mb-2 text-muted">My money's in that office, right? If she start giving me...</p>
-                        <div class="blog-comments__actions">
-                          <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-white">
-                              <span class="text-success">
-                                <i class="material-icons">check</i>
-                              </span> Approve </button>
-                            <button type="button" class="btn btn-white">
-                              <span class="text-danger">
-                                <i class="material-icons">clear</i>
-                              </span> Reject </button>
-                            <button type="button" class="btn btn-white">
-                              <span class="text-light">
-                                <i class="material-icons">more_vert</i>
-                              </span> Edit </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-footer border-top">
-                    <div class="row">
-                      <div class="col text-center view-report">
-                        <button type="submit" class="btn btn-white">View All Comments</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- End Discussions Component -->
-              <!-- Top Referrals Component -->
               <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
                 <div class="card card-small">
                   <div class="card-header border-bottom">
-                    <h6 class="m-0">Top Referrals</h6>
+                    <h6 class="m-0">Top 10 Large Quantity Products</h6>
                   </div>
                   <div class="card-body p-0">
                     <ul class="list-group list-group-small list-group-flush">
+                      <% if (largeqty.length >0){ %>
+                     
+                        <% largeqty.forEach(function(row){ %>
                       <li class="list-group-item d-flex px-3">
-                        <span class="text-semibold text-fiord-blue">GitHub</span>
-                        <span class="ml-auto text-right text-semibold text-reagent-gray">19,291</span>
+                        <span class="text-semibold text-fiord-blue"><%= row.productname %></span>
+                        <span class="ml-auto text-right text-semibold text-reagent-gray"><%= row.quantity %></span>
                       </li>
-                      <li class="list-group-item d-flex px-3">
-                        <span class="text-semibold text-fiord-blue">Stack Overflow</span>
-                        <span class="ml-auto text-right text-semibold text-reagent-gray">11,201</span>
-                      </li>
-                      <li class="list-group-item d-flex px-3">
-                        <span class="text-semibold text-fiord-blue">Hacker News</span>
-                        <span class="ml-auto text-right text-semibold text-reagent-gray">9,291</span>
-                      </li>
-                      <li class="list-group-item d-flex px-3">
-                        <span class="text-semibold text-fiord-blue">Reddit</span>
-                        <span class="ml-auto text-right text-semibold text-reagent-gray">8,281</span>
-                      </li>
-                      <li class="list-group-item d-flex px-3">
-                        <span class="text-semibold text-fiord-blue">The Next Web</span>
-                        <span class="ml-auto text-right text-semibold text-reagent-gray">7,128</span>
-                      </li>
-                      <li class="list-group-item d-flex px-3">
-                        <span class="text-semibold text-fiord-blue">Tech Crunch</span>
-                        <span class="ml-auto text-right text-semibold text-reagent-gray">6,218</span>
-                      </li>
-                      <li class="list-group-item d-flex px-3">
-                        <span class="text-semibold text-fiord-blue">YouTube</span>
-                        <span class="ml-auto text-right text-semibold text-reagent-gray">1,218</span>
-                      </li>
-                      <li class="list-group-item d-flex px-3">
-                        <span class="text-semibold text-fiord-blue">Adobe</span>
-                        <span class="ml-auto text-right text-semibold text-reagent-gray">827</span>
-                      </li>
+                   
+                    
+                      <% })} else { %>
+         
+                   <%  } %>
                     </ul>
                   </div>
-                  <div class="card-footer border-top">
-                    <div class="row">
-                      <div class="col">
-                        <select class="custom-select custom-select-sm">
-                          <option selected="">Last Week</option>
-                          <option value="1">Today</option>
-                          <option value="2">Last Month</option>
-                          <option value="3">Last Year</option>
-                        </select>
-                      </div>
-                      <div class="col text-right view-report">
-                        <a href="#">Full report →</a>
-                      </div>
-                    </div>
+               
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">Top 10 Small Quantity Products</h6>
                   </div>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                      <% if (smallqty.length >0){ %>
+                     
+                        <% smallqty.forEach(function(row){ %>
+                          <li class="list-group-item d-flex px-3">
+                            <span class="text-semibold text-fiord-blue"><%= row.productname %></span>
+                            <span class="ml-auto text-right text-semibold text-reagent-gray"><%= row.quantity %></span>
+                          </li>
+                    
+                      <% })} else { %>
+         
+                   <%  } %>
+                    </ul>
+                  </div>
+                
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">Top 10 Most Sold Products</h6>
+                  </div>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                      <% if (mostsoldqty.length >0){ %>
+                     
+                        <% mostsoldqty.forEach(function(row){ %>
+                      <li class="list-group-item d-flex px-3">
+                        <span class="text-semibold text-fiord-blue"><%= row.description %></span>
+                        <span class="ml-auto text-right text-semibold text-reagent-gray"><%= row.qty %></span>
+                      </li>
+                   
+                    
+                      <% })} else { %>
+         
+                   <%  } %>
+                    </ul>
+                  </div>
+                
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">Top 10 Frequently Sold Products</h6>
+                  </div>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                      <% if (mostfreqently.length >0){ %>
+                     
+                        <% mostfreqently.forEach(function(row){ %>
+                      <li class="list-group-item d-flex px-3">
+                        <span class="text-semibold text-fiord-blue"><%= row.description %></span>
+                        <span class="ml-auto text-right text-semibold text-reagent-gray"><%= row.transCount %></span>
+                      </li>
+                   
+                    
+                      <% })} else { %>
+         
+                   <%  } %>
+                    </ul>
+                  </div>
+                
                 </div>
               </div>
               <!-- End Top Referrals Component -->

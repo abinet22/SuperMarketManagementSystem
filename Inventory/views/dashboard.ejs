@@ -453,9 +453,8 @@
                   <a class="dropdown-item text-danger" href="/report">
                     <i class="material-icons text-danger">share
                     </i><span> Show Reports</span> </a>
-                  <a class="dropdown-item text-danger" href="/stastics">
-                    <i class="material-icons text-danger">timeline</i><span> Show Stastics</span></a>
-               
+					
+				   
                     </div>
               </li>
           
@@ -546,9 +545,593 @@
                 <h3 class="page-title">Inventory</h3>
               </div>
             </div>
+            <div class="alert alert-dismissible fade show col-sm-12" role="alert" id="success" style="display:none;">
+              <p id="successmsg"></p>
+              <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button> -->
+            </div>
             <!-- End Page Header -->
             <!-- Small Stats Blocks -->
+            <div class="row">
          
+                 
+             <div class="col-md-4">
+              <div class="card">
+                <div class= "card-header">
+                    <h3>Choose Product</h3>
+                </div>
+                <div class="card-body">
+              
+					<% var catlist; %>
+                  <% var proid; %>
+				  <% var invlst; %>
+				  <% if (procategory.length > 0){ %>
+					<% catlist = procategory ; %>
+					<% procategory.forEach(function(row){ %>
+				
+					  <% })} else { %>
+		
+				<%  } %>
+				<% if (inventory.length > 0){ %>
+					<% invlst = inventory; %>
+					<% inventory.forEach(function(row){ %>
+				
+					  <% })} else { %>
+						<% invlst = 0; %>
+				<%  } %>
+                    <div class="form-group">
+                      <label for="exampleFormControlSelect1">Select Product Name</label>
+                      <select class="form-control" id="proname" name="proname" onchange="onproductnameselect(this)">
+                        <option value="0">Please Select Product Name</option>
+                        <% if (productlist.length > 0){ %>
+                          <% proid = productlist ; %>
+                          <% productlist.forEach(function(row){ %>
+                          
+                          
+                           
+                            <option value='<%= row.productname %>'><%= row.productname %></option>
+                        
+                            <% })} else { %>
+              
+                      <%  } %>
+                      </select>
+                    </div>
+                    <div class="form-group" style="display: none;">
+                      <label for="exampleFormControlInput1">Product ID</label>
+                      <input type="text" class="form-control" id="proid" name="proid" placeholder="Product ID" disabled>
+                    </div>
+					<div class="form-group">
+						<label for="exampleFormControlInput1">Product Category</label>
+						<input type="text" class="form-control" id="procat" name="procat" placeholder="Product Category"  disabled>
+					  </div>
+                    <script>
+                      function isNumberKey(evt)
+       {
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+          
+             return false;
+
+          return true;
+       }
+                       
+                      function onproductnameselect(selectObject) {
+                        document.getElementById('shelveno').value = "";
+		   document.getElementById('currqty').value = 0;
+       document.getElementById('shelveno').removeAttribute("disabled");
+    var value = selectObject.value; 
+    let nameobj= '<%- JSON.stringify(proid) %>';  
+    let catid= '<%- JSON.stringify(catlist) %>';  
+	let invlst = '<%- JSON.stringify(invlst) %>';  
+	let inventorylist =JSON.parse(invlst);
+
+   let name =  JSON.parse(nameobj);
+   let cat =  JSON.parse(catid);
+    if(name.length > 0)
+    {
+      for(var i = 0; i < name.length; i++)
+{
+	var proid  = name[i].proid;
+	var procatid  = name[i].productcategory;
+  var proname  = name[i].productname;
+  if(proname === value)
+       {
+        var id = name[i].proid;
+        var price = name[i].price;
+           document.getElementById('proid').value = id;
+           document.getElementById('price').value = price;
+
+		   for(var i = 0; i < cat.length; i++)
+{
+  var category  = cat[i].catid;
+  if(category === procatid)
+       {
+        var categoryname = cat[i].procategoryname;
+       
+           document.getElementById('procat').value = categoryname;
+      
+      }
+   
+}
+
+if(inventorylist.length > 0)
+{
+	for(var i = 0; i < inventorylist.length; i++)
+{
+  var invproid  = inventorylist[i].productid;
+  if(invproid === proid)
+       {
+    
+        var shelveno = inventorylist[i].shelfno;
+		var currentqty = inventorylist[i].quantity;
+
+    if(currentqty <100)
+  {
+   var curqrt=document.getElementById('currqty');
+   curqrt.style.color="#c4183c";
+
+  }
+           document.getElementById('shelveno').value = shelveno;
+		   document.getElementById('currqty').value = currentqty;
+		   document.getElementById('shelveno').setAttribute("disabled","disabled");
+      
+      }
+   
+}
+}
+else
+{
+
+   	document.getElementById('shelveno').value = "";
+		   document.getElementById('currqty').value = "0";
+		
+}
+
+      }
+   
+}
+
+
+    
+     }
+  
+  
+  }
+                   </script>
+                     <div class="form-group">
+                      <label for="exampleFormControlInput1">Selling Price</label>
+                      <input type="text" class="form-control" id="price" name="price" placeholder="Selling Price" disabled>
+                    </div>
+					<div class="form-group">
+						<label for="exampleFormControlInput1">Current Quanity</label>
+						<input type="text" class="form-control" id="currqty" name="currqty" placeholder="Current Quantity" disabled >
+					  </div>
+           
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <button class="btn btn-white" type="button">Shelve Number</button>
+                </div>
+                <input type="text" class="form-control" id="shelveno" name="shelveno" placeholder="Insert Shelf No" onkeypress="return isNumberKey(event)" >
+         
+              </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <button class="btn btn-white" type="button">Buying Price</button>
+              </div>
+              <input type="text" class="form-control" id="bprice" name="bprice" placeholder="Enter Buying Price" onkeypress="return isNumberKey(event)">
+				
+            </div>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <button class="btn btn-white" type="button">New Quantity To Add</button>
+                      </div>
+                      <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Quantity" onkeypress="return isNumberKey(event)" >
+       
+                    </div>
+			
+                  
+       <input type="button" class="btn btn-lg btn-block btn-primary" id="addRow" value="Add" onclick="addRow()">
+                  
+                </div>
+            </div>
+             </div>
+             <div class="card col-md-8">
+              <div class="card-body wrap cf">
+              
+                <div class="heading cf">
+             <i class="fab fa-houzz fa-3x" aria-hidden="true" style="color: green;"></i>Inventory Shelves
+                </div>
+                <div class="cart" id="cont">
+          
+               
+                </div>
+                
+              
+                
+                <div class="subtotal">
+                  
+                
+                         
+                      
+                  <form>
+                    <button type="button" class="btn btn-lg btn-block btn-primary" onclick="convertArrayToJSON();" >Save To Inventory</button>
+                  </form>
+                
+           
+                </div>
+              </div>
+             </div>
+            </div>
+            <!-- End Small Stats Blocks -->
+          
+           <div class="row">
+          
+           </div>
+           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+           <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.4.0/jquery.json.min.js"></script>
+       
+           <script>
+          
+                  
+                    function storeTblValues()
+                    {
+                        var TableData = new Array();
+                       
+                        $('#empTable tr').each(function (row, tr) {
+                         
+                          var currentRow=$(this);
+                          var col =currentRow.find("td:eq(1)").text();
+           if(!col.length )
+           {
+             
+           }
+  else{
+    var col1_value=currentRow.find("td:eq(1)").text();
+    var col2_value=currentRow.find("td:eq(2)").text();
+	var col3_value=currentRow.find("td:eq(3)").text();
+	var col4_value=currentRow.find("td:eq(4)").text();
+    var col5_value=currentRow.find("td:eq(5)").text();
+	var col6_value=currentRow.find("td:eq(6)").text();
+   
+     var obj={};
+    obj.ProductId=col1_value;
+    obj.ProductDescription=col2_value;
+    obj.ProductCategory=col3_value;
+	obj.BuyingPrice=parseFloat(col4_value);
+	obj.ShelveNumber=parseFloat(col5_value);
+	obj.NewQuantity=parseFloat(col6_value);
+    TableData.push(obj);
+  }
+
+    
+                            // TableData[row] = {
+                            
+                            //     "ProductDescription": $(tr).find('td:eq(1)').text()
+                            //     , "UnitPrice": $(tr).find('td:eq(2)').text()
+                            //     , "Quanity": $(tr).find('td:eq(3)').text()
+                            //     , "Total": $(tr).find('td:eq(4)').text()
+                            // }
+                        });
+                      // first row will be empty - so remove
+                      console.log(TableData);
+                        return TableData;
+                    }
+            
+                    function convertArrayToJSON()
+                    {
+                        var TableData;
+                       // TableData = $.toJSON(storeTblValues());
+                       TableData =  JSON.stringify(storeTblValues());
+                      //  $('#tbConvertToJSON').html('<br>JSON array: <br>' + TableData.replace(/},/g, "},<br>"));
+            
+          //  console.log(TableData);
+          $.ajax({
+                            type: "POST",
+                            url: "/addnewinventorylist",
+                            data: "pTableData=" + TableData,    // post TableData to server script
+            
+                            success: function (data) {
+                              if(data.messages == 'success'){ // if true (1)
+                                var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className="alert-success";
+    msg.innerHTML="You are successfully add new sale data!"
+      setTimeout(function(){// wait for 5 secs(2)
+           location.reload(); // then reload the page.(3)
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
+      // setTimeout(function(){// wait for 5 secs(2)
+      //      location.reload(); // then reload the page.(3)
+      // }, 1000); 
+   }
+   else{
+    var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className = "alert-danger";
+    msg.innerHTML="Something is wrong please try later!"
+      setTimeout(function(){// wait for 5 secs(2)
+           location.reload(); // then reload the page.(3)
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
+   
+   } 
+                            },
+                            error: function (data) {
+                                // return value stored in msg variable 
+                              console.log(msg);
+                            }
+                        });
+                    }
+               
+                </script>
+         
+           <script type="text/javascript">
+        
+         var arrHead = new Array();	// array for header.
+    arrHead = ['', 'Product ID','Description','ProductCategory','BuyingPrice','ShelveNumber', 'NewQuanity'];
+
+    // first create TABLE structure with the headers. 
+    function createTable() {
+        var empTable = document.createElement('table');
+        empTable.setAttribute('id', 'empTable'); // table id.
+
+        var tr = empTable.insertRow(-1);
+        for (var h = 0; h < arrHead.length; h++) {
+            var th = document.createElement('th'); // create table headers
+            th.innerHTML = arrHead[h];
+            tr.appendChild(th);
+        }
+
+        var div = document.getElementById('cont');
+        div.appendChild(empTable);  // add the TABLE to the container.
+    }
+    var subtotal =0;
+    // now, add a new to the TABLE.
+    function addRow() {
+      
+                var proqty =document.getElementById('qty').value;
+                var curqty =document.getElementById('currqty').value;
+                var proname =document.getElementById('proname').value;
+                var shelf = document.getElementById('shelveno').value;
+                if(!proqty.length )
+                {
+                  var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className="alert-danger";
+    msg.innerHTML="Please enter the right quantity for the product to add."
+      setTimeout(function(){// wait for 5 secs(2)
+           location.reload(); // then reload the page.(3)
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
+                }
+              else  if(curqty < proqty )
+                {
+                  var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className="alert-danger";
+    msg.innerHTML="You dont have the right quantity fot this product update inventory first!"
+      setTimeout(function(){// wait for 5 secs(2)
+           location.reload(); // then reload the page.(3)
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
+                }
+                else  if(shelf=="" )
+                {
+                  var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className="alert-danger";
+    msg.innerHTML="Please enter shelf number for the inventory to add"
+      setTimeout(function(){// wait for 5 secs(2)
+           location.reload(); // then reload the page.(3)
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
+                }
+               
+              else if(proname =="0")
+                {
+                  var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className="alert-danger";
+    msg.innerHTML="Please choose product name first!"
+      setTimeout(function(){// wait for 5 secs(2)
+           location.reload(); // then reload the page.(3)
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
+                }
+           else{
+           
+        var empTab = document.getElementById('empTable');
+
+        var rowCnt = empTab.rows.length;   // table row count.
+        var tr = empTab.insertRow(rowCnt); // the table row.
+      //  tr.setAttribute('class','data');
+        tr = empTab.insertRow(rowCnt);
+
+        for (var c = 0; c < arrHead.length; c++) {
+            var td = document.createElement('td'); // table definition.
+            td = tr.insertCell(c);
+
+            if (c == 0) {      // the first column.
+                // add a button in every new row in the first column.
+                var button = document.createElement('input');
+
+                // set input attributes.
+                button.setAttribute('type', 'button');
+                button.setAttribute('value', 'X');
+              
+             
+                button.style.fontweight="bold";
+                button.style.background=" #e0e0e0";
+	              button.style.borderRadius="50%";
+                button.style.borderWidth="0";
+                button.style.display ="inline-block";
+               // button.style.backgroundColor ="red";
+                button.setAttribute('onmouseover', 'hovers(this)');
+                
+             button.setAttribute('onmouseout','hoverends(this)')
+                // add button's 'onclick' event.
+                button.setAttribute('onclick', 'removeRow(this)');
+
+                td.appendChild(button);
+            }
+        
+            else if(c ==1){
+                // 2nd, 3rd and 4th column, will have textbox.
+                var proid = document.getElementById('proid').value;
+              
+
+             var ele = document.createElement('td');
+         
+                td.style.width= "300px";
+                td.innerHTML=proid ;
+              //  td.appendChild(ele);
+            }
+            else if(c==2){
+              var proname =document.getElementById('proname').value;
+              
+              var ele = document.createElement('td');
+         
+             
+                td.style.width= "150px";
+                td.innerHTML = proname;
+               // td.appendChild(ele);
+            }
+		      	else if(c==3){
+              var procat =document.getElementById('procat').value;
+              
+              var ele = document.createElement('td');
+                          
+                td.style.width= "150px";
+                td.innerHTML = procat;
+               // td.appendChild(ele);
+            }
+		      	else if(c==4){
+              var bprice =document.getElementById('bprice').value;
+              
+              var ele = document.createElement('td');
+       
+                td.style.width= "150px";
+                td.innerHTML = bprice;
+               // td.appendChild(ele);
+            }
+		      	else if(c==5){
+              var shelveno =document.getElementById('shelveno').value;
+              
+              var ele = document.createElement('td');
+            
+                td.style.width= "150px";
+                td.innerHTML = shelveno;
+               // td.appendChild(ele);
+            }
+            else {
+            
+              var proqty =document.getElementById('qty').value;
+              
+              var ele = document.createElement('td');
+
+                td.innerHTML = proqty ;
+               // td.appendChild(ele);
+            }
+            
+        }
+        document.getElementById('bprice').value ="";
+        document.getElementById('qty').value="";
+        document.getElementById('proid').value="";
+        document.getElementById('proname').value=0;
+        document.getElementById('procat').value="";
+        document.getElementById('bprice').value="";
+        document.getElementById('shelveno').value="";
+        document.getElementById('price').value="";
+        document.getElementById('currqty').value="";
+      }
+   
+      }
+
+
+
+
+
+    function hovers(x){
+                  x.style.backgroundColor ="red";
+                }
+   function hoverends(x){
+                  x.style.backgroundColor ="#e0e0e0";
+                }
+
+    // delete TABLE row function.
+    function removeRow(oButton) {
+        var empTab = document.getElementById('empTable');
+        var rowindex = oButton.parentNode.parentNode.rowIndex;
+       
+    //    var element= document.getElementById("empTable").rows[rowindex].cells[5];
+           
+    // var total =    element.innerHTML ;
+    //                 parseFloat(total);
+    //                  subtotal -=total ;
+    //           var vat = subtotal * 0.15;
+    //           document.getElementById('subtotal').innerHTML = subtotal;
+    //           document.getElementById('vat').innerHTML = vat;
+    //           document.getElementById('total').innerHTML = subtotal + vat;
+      //           }
+        empTab.deleteRow(oButton.parentNode.parentNode.rowIndex); // button -> td -> tr.
+        
+      
+    }
+
+    // function to extract and submit table data.
+    function submit() {
+        var myTab = document.getElementById('empTable');
+        var arrValues = new Array();
+
+        // loop through each row of the table.
+        for (row = 1; row < myTab.rows.length - 1; row++) {
+        	// loop through each cell in a row.
+            for (c = 0; c < myTab.rows[row].cells.length; c++) {  
+                var element = myTab.rows.item(row).cells[c];
+                if (element.childNodes[0].getAttribute('type') == 'text') {
+                    arrValues.push("'" + element.childNodes[0].value + "'");
+                }
+            }
+        }
+        
+        // The final output.
+        document.getElementById('output').innerHTML = arrValues;
+        //console.log (arrValues);   // you can see the array values in your browsers console window. Thanks :-) 
+    }
+
+            </script>
           </div>
           <footer class="main-footer d-flex p-2 px-3 bg-white border-top">
        
