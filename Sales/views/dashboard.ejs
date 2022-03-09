@@ -563,10 +563,24 @@
               
                 
                   <% var proid; %>
+                  <% var inventory; %>
+                  <% if (inventorylist.length >0){ %>
+                    <% inventory = inventorylist ; %>
+                    <% productlist.forEach(function(row){ %>
+                  
+                      <% })} else { %>
+                        <% inventory = 0 ; %>
+                <%  } %>
+                  <div class="form-group">
+                    <label for="exampleFormControlInput1">Product Bar Code</label>
+                    <input type="text" class="form-control" id="procode" name="procode" placeholder="Product Bar Code" onchange="loaddata(this)" >
+                  </div>
                     <div class="form-group">
-                      <label for="exampleFormControlSelect1">Select Product Name</label>
+                      <label for="exampleFormControlSelect1" id="selectedpro" style="color: #f30;">Select Product Name</label>
+                      
                       <select class="form-control" id="proname" name="proname" onchange="onproductnameselect(this)">
                         <option value="0">Please Select Product Name</option>
+                        
                         <% if (productlist.length >0){ %>
                           <% proid = productlist ; %>
                           <% productlist.forEach(function(row){ %>
@@ -581,13 +595,21 @@
                       </select>
                     </div>
                     <div class="form-group">
-                      <label for="exampleFormControlInput1">Product ID</label>
-                      <input type="text" class="form-control" id="proid" name="proid" placeholder="Product ID" disabled>
+                     
+                      <input type="hidden" class="form-control" id="proid" name="proid" placeholder="Product ID" disabled>
                     </div>
-              
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1">Measurement Unit</label>
+                      <input type="text" class="form-control" id="unit" name="unit" placeholder="unit" disabled>
+                    </div>
                      <div class="form-group">
                       <label for="exampleFormControlInput1">Price</label>
                       <input type="text" class="form-control" id="price" name="price" placeholder="Price" disabled>
+                    </div>
+                   
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1">Current Quantity</label>
+                      <input type="text" class="form-control" id="currqty" name="currqty" placeholder="Current Quantity" disabled>
                     </div>
                     <div class="form-group">
                       <label for="exampleFormControlInput1">Qty</label>
@@ -659,12 +681,35 @@ if (charCode != 46 && charCode > 31
 
 return true;
 }
-             
+var procode 
+function loaddata() {
+var procode =  document.getElementById('procode').value;
+ barcodereader(procode);
+}
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}    
             function onproductnameselect(selectObject) {
 var value = selectObject.value; 
+var inventory ;
 let nameobj= '<%- JSON.stringify(proid) %>';  
+if (isJson('<%- JSON.stringify(inventory) %>')){
+  let inventoryobj= '<%- JSON.stringify(inventory) %>'; 
+   inventory =  JSON.parse(inventoryobj);
+}else{
+    //report the error
+     inventory = 0 ; 
+}
+ 
 
 let name =  JSON.parse(nameobj);
+//let inventory =  JSON.parse(inventoryobj);
+console.log(inventory);
 if(name.length > 0)
 {
 for(var i = 0; i < name.length; i++)
@@ -679,13 +724,97 @@ var price = name[i].price;
 }
 //alert(name[i].productname);
 }
+if(inventory == 0)
+{
+  document.getElementById('currqty').value = 0;
+}
+else{
+  for(var i = 0; i < inventory.length; i++)
+{
+var proname  = inventory[i].productname;
+if(proname === value)
+{
 
+var quantity = inventory[i].quantity;
+ document.getElementById('currqty').value = quantity;
+
+}
+else{
+  document.getElementById('currqty').value = 0;
+}
+//alert(name[i].productname);
+}
+}
 
 }
 
 
 }
-         </script>
+
+
+function barcodereader(selectObject) {
+var value = selectObject; 
+var inventory;
+let nameobj= '<%- JSON.stringify(proid) %>';  
+if (isJson('<%- JSON.stringify(inventory) %>')){
+  let inventoryobj= '<%- JSON.stringify(inventory) %>'; 
+   inventory =  JSON.parse(inventoryobj);
+}else{
+    //report the error
+     inventory = 0 ; 
+}
+let name =  JSON.parse(nameobj);
+if(name.length > 0)
+{
+for(var i = 0; i < name.length; i++)
+{
+var productcode  = name[i].productcode;
+if(productcode === value)
+{
+var id = name[i].proid;
+var price = name[i].price;
+var proname = name[i].productname;
+ document.getElementById('proid').value = id;
+ document.getElementById('price').value = price;
+ document.getElementById('proname').value = proname;
+ document.getElementById('selectedpro').innerHTML ="Selected Product:"+proname;
+}
+
+
+//alert(name[i].productname);
+}
+
+if(inventory == 0)
+{
+
+  document.getElementById('currqty').value = 0;
+}
+else{
+  for(var i = 0; i < inventory.length; i++)
+{
+var productcode  = inventory[i].productcode;
+if(productcode === value)
+{
+
+var quantity = inventory[i].quantity;
+ document.getElementById('currqty').value = quantity;
+
+}
+else{
+  document.getElementById('currqty').value = 0;
+}
+//alert(name[i].productname);
+}
+}
+
+
+}
+
+
+}
+        
+        
+        </script>
            <script>
           
                     function storeTblValues()
@@ -809,6 +938,7 @@ var price = name[i].price;
 
     // first create TABLE structure with the headers. 
     function createTable() {
+      document.getElementById("procode").focus();
         var empTable = document.createElement('table');
         empTable.setAttribute('id', 'empTable'); // table id.
 
@@ -829,17 +959,54 @@ var price = name[i].price;
                 var proqty =document.getElementById('qty').value;
                 var proprice =document.getElementById('price').value;
                 var proname =document.getElementById('proname').value;
+                var curqty =   document.getElementById('currqty').value;
                 if(!proqty.length )
                 {
-               alert("Please enter quantity");
+                  var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className="alert-danger";
+    msg.innerHTML="Please enter the right quantity for the product to add."
+      setTimeout(function(){// wait for 5 secs(2)
+        x.style.display = "none";
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
                 }
-                // if(!proprice.length)
-                // {
-                //   alert("Please enter price");
-                // }
+                else  if(curqty < proqty )
+                {
+                  var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className="alert-danger";
+    msg.innerHTML="You dont have the right quantity for this product update inventory first!"
+    setTimeout(function(){// wait for 5 secs(2)
+        x.style.display = "none";
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
+                }
               else if(proname =="0")
                 {
-                  alert("Please select product");
+                  var x = document.getElementById("success");
+                                var msg = document.getElementById("successmsg");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.className="alert-danger";
+    msg.innerHTML="Please select product to add."
+    setTimeout(function(){// wait for 5 secs(2)
+        x.style.display = "none";
+      }, 2000); 
+
+  } else {
+    x.style.display = "none";
+  }
                 }
            else{
               var tot = proqty * proprice;
@@ -981,7 +1148,7 @@ var price = name[i].price;
             
         }
    
-   
+       
       }
    
       }

@@ -394,7 +394,7 @@
         <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
           <div class="main-navbar">
             <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
-              <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
+              <a class="navbar-brand w-100 mr-0" href="/" style="line-height: 25px;">
                 <div class="d-table m-auto">
                   <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="images/shards-dashboards-logo.svg" alt="Shards Dashboard">
                   <span class="d-none d-md-inline ml-1">SISMS </span>
@@ -580,6 +580,10 @@
 					  <% })} else { %>
 						<% invlst = 0; %>
 				<%  } %>
+        <div class="form-group" >
+          <label for="exampleFormControlInput1">Enter Bar Code</label>
+          <input type="text" class="form-control" id="barcode" name="barcode" placeholder="Product Bar Code" onchange="loaddata(this)">
+        </div>
                     <div class="form-group">
                       <label for="exampleFormControlSelect1">Select Product Name</label>
                       <select class="form-control" id="proname" name="proname" onchange="onproductnameselect(this)">
@@ -599,7 +603,11 @@
                     </div>
                     <div class="form-group" style="display: none;">
                       <label for="exampleFormControlInput1">Product ID</label>
-                      <input type="text" class="form-control" id="proid" name="proid" placeholder="Product ID" disabled>
+                      <input type="hidden" class="form-control" id="proid" name="proid" placeholder="Product ID" disabled>
+                    </div>
+                      <div class="form-group" style="display: none;">
+                      <label for="exampleFormControlInput1">Product Code</label>
+                      <input type="text" class="form-control" id="procode" name="procode" placeholder="Product Code" disabled>
                     </div>
 					<div class="form-group">
 						<label for="exampleFormControlInput1">Product Category</label>
@@ -616,16 +624,138 @@
 
           return true;
        }
-                       
-                      function onproductnameselect(selectObject) {
-                        document.getElementById('shelveno').value = "";
-		   document.getElementById('currqty').value = 0;
-       document.getElementById('shelveno').removeAttribute("disabled");
-    var value = selectObject.value; 
+       function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}    
+
+
+function loaddata() {
+var procode =  document.getElementById('barcode').value;
+ barcodereader(procode);
+}
+
+function barcodereader(selectObject) {
+  var value = selectObject; 
+  console.log(value);
+  var s = document.getElementById('shelveno');
+  s.removeAttribute("disabled");
+  document.getElementById('shelveno').value="";
+    var inventory ;
+    var cat;
     let nameobj= '<%- JSON.stringify(proid) %>';  
     let catid= '<%- JSON.stringify(catlist) %>';  
-	let invlst = '<%- JSON.stringify(invlst) %>';  
-	let inventorylist =JSON.parse(invlst);
+
+    if (isJson('<%- JSON.stringify(invlst) %>')){
+  let inventoryobj= '<%- JSON.stringify(invlst) %>'; 
+   inventory =  JSON.parse(inventoryobj);
+}else{
+    //report the error
+     inventory = 0 ; 
+}
+
+   let name =  JSON.parse(nameobj);
+   cat =  JSON.parse(catid);
+if(name.length > 0)
+{
+for(var i = 0; i < name.length; i++)
+{
+var productcode  = name[i].productcode;
+var procatid  = name[i].productcategory;
+if(productcode === value)
+{
+
+var id = name[i].proid;
+var price = name[i].price;
+var proname = name[i].productname;
+var procode = name[i].productcode;
+ document.getElementById('proid').value = id;
+ document.getElementById('price').value = price;
+ document.getElementById('proname').value = proname;
+ document.getElementById('procode').value = procode;
+
+ for(var i = 0; i < cat.length; i++)
+{
+  var category  = cat[i].catid;
+  if(category === procatid)
+       {
+        var categoryname = cat[i].procategoryname;
+       
+           document.getElementById('procat').value = categoryname;
+      
+      }
+   }
+
+   if(inventory == 0)
+{
+
+  document.getElementById('currqty').value = 0;
+}
+else{
+  for(var i = 0; i < inventory.length; i++)
+{
+var productcode  = inventory[i].productcode;
+if(productcode === value)
+{
+
+  var shelveno = inventory[i].shelfno;
+var quantity = inventory[i].quantity;
+ document.getElementById('currqty').value = quantity;
+ if ( !shelveno)
+ {
+ 
+   document.getElementById('shelveno').value = "";
+ }
+ else{
+   var s = document.getElementById('shelveno');
+   s.setAttribute('disabled',true);
+  document.getElementById('shelveno').value = shelveno;
+
+ }
+}
+else{
+  document.getElementById('currqty').value = 0;
+}
+//alert(name[i].productname);
+}
+}
+
+  }
+
+
+}
+
+
+
+}
+
+
+}
+     
+
+
+
+
+                      function onproductnameselect(selectObject) {
+                     
+    var value = selectObject.value; 
+    var s = document.getElementById('shelveno');
+  s.removeAttribute("disabled");
+  document.getElementById('shelveno').value="";
+    var inventory ;
+    let nameobj= '<%- JSON.stringify(proid) %>';  
+    let catid= '<%- JSON.stringify(catlist) %>';  
+    if (isJson('<%- JSON.stringify(invlst) %>')){
+  let inventoryobj= '<%- JSON.stringify(invlst) %>'; 
+   inventory =  JSON.parse(inventoryobj);
+}else{
+    //report the error
+     inventory = 0 ; 
+}
 
    let name =  JSON.parse(nameobj);
    let cat =  JSON.parse(catid);
@@ -638,10 +768,13 @@
   var proname  = name[i].productname;
   if(proname === value)
        {
-        var id = name[i].proid;
+    
+       var id = name[i].proid;
         var price = name[i].price;
+         var procode = name[i].productcode;
            document.getElementById('proid').value = id;
            document.getElementById('price').value = price;
+            document.getElementById('procode').value = procode;
 
 		   for(var i = 0; i < cat.length; i++)
 {
@@ -653,53 +786,55 @@
            document.getElementById('procat').value = categoryname;
       
       }
+     
    
 }
 
-if(inventorylist.length > 0)
-{
-	for(var i = 0; i < inventorylist.length; i++)
-{
-  var invproid  = inventorylist[i].productid;
-  if(invproid === proid)
-       {
-    
-        var shelveno = inventorylist[i].shelfno;
-		var currentqty = inventorylist[i].quantity;
-
-    if(currentqty <100)
-  {
-   var curqrt=document.getElementById('currqty');
-   curqrt.style.color="#c4183c";
-
-  }
-           document.getElementById('shelveno').value = shelveno;
-		   document.getElementById('currqty').value = currentqty;
-		   document.getElementById('shelveno').setAttribute("disabled","disabled");
-      
-      }
-   
-}
-}
-else
-{
-
-   	document.getElementById('shelveno').value = "";
-		   document.getElementById('currqty').value = "0";
-		
-}
 
       }
    
 }
 
 
-    
+if(inventory == 0)
+{
+  document.getElementById('currqty').value = 0;
+}
+else{
+  for(var i = 0; i < inventory.length; i++)
+{
+var proname  = inventory[i].productname;
+if(proname === value)
+{
+  var shelveno = inventory[i].shelfno;
+var quantity = inventory[i].quantity;
+ document.getElementById('currqty').value = quantity;
+ if ( !shelveno)
+ {
+ 
+   document.getElementById('shelveno').value = "";
+ }
+ else{
+   var s = document.getElementById('shelveno');
+   s.setAttribute('disabled',true);
+  document.getElementById('shelveno').value = shelveno;
+
+ }
+ 
+}
+else{
+  document.getElementById('currqty').value = 0;
+}
+//alert(name[i].productname);
+}
+}
      }
   
   
   }
-                   </script>
+                  
+                  
+                  </script>
                      <div class="form-group">
                       <label for="exampleFormControlInput1">Selling Price</label>
                       <input type="text" class="form-control" id="price" name="price" placeholder="Selling Price" disabled>
@@ -713,7 +848,7 @@ else
                 <div class="input-group-prepend">
                   <button class="btn btn-white" type="button">Shelve Number</button>
                 </div>
-                <input type="text" class="form-control" id="shelveno" name="shelveno" placeholder="Insert Shelf No" onkeypress="return isNumberKey(event)" >
+                <input type="text" class="form-control" id="shelveno" name="shelveno" placeholder="Insert Shelf No"  >
          
               </div>
             <div class="input-group mb-3">
@@ -794,6 +929,7 @@ else
 	var col4_value=currentRow.find("td:eq(4)").text();
     var col5_value=currentRow.find("td:eq(5)").text();
 	var col6_value=currentRow.find("td:eq(6)").text();
+   	var col7_value=currentRow.find("td:eq(7)").text();
    
      var obj={};
     obj.ProductId=col1_value;
@@ -802,6 +938,7 @@ else
 	obj.BuyingPrice=parseFloat(col4_value);
 	obj.ShelveNumber=parseFloat(col5_value);
 	obj.NewQuantity=parseFloat(col6_value);
+	obj.ProductCode=parseFloat(col7_value);
     TableData.push(obj);
   }
 
@@ -880,10 +1017,11 @@ else
            <script type="text/javascript">
         
          var arrHead = new Array();	// array for header.
-    arrHead = ['', 'Product ID','Description','ProductCategory','BuyingPrice','ShelveNumber', 'NewQuanity'];
+    arrHead = ['', 'Product ID','Description','ProductCategory','BuyingPrice','ShelveNumber', 'NewQuanity','ProductCode'];
 
     // first create TABLE structure with the headers. 
     function createTable() {
+      document.getElementById("barcode").focus();
         var empTable = document.createElement('table');
         empTable.setAttribute('id', 'empTable'); // table id.
 
@@ -921,22 +1059,7 @@ else
     x.style.display = "none";
   }
                 }
-              else  if(curqty < proqty )
-                {
-                  var x = document.getElementById("success");
-                                var msg = document.getElementById("successmsg");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-    x.className="alert-danger";
-    msg.innerHTML="You dont have the right quantity fot this product update inventory first!"
-      setTimeout(function(){// wait for 5 secs(2)
-           location.reload(); // then reload the page.(3)
-      }, 2000); 
-
-  } else {
-    x.style.display = "none";
-  }
-                }
+        
                 else  if(shelf=="" )
                 {
                   var x = document.getElementById("success");
@@ -1055,13 +1178,22 @@ else
                 td.innerHTML = shelveno;
                // td.appendChild(ele);
             }
-            else {
-            
+            	else if(c==6){
               var proqty =document.getElementById('qty').value;
               
               var ele = document.createElement('td');
+            
+                td.style.width= "150px";
+                td.innerHTML = proqty;
+               // td.appendChild(ele);
+            }
+            else {
+            
+              var procode =document.getElementById('procode').value;
+              
+              var ele = document.createElement('td');
 
-                td.innerHTML = proqty ;
+                td.innerHTML = procode ;
                // td.appendChild(ele);
             }
             

@@ -92,24 +92,7 @@
                         <i class="material-icons text-danger">playlist_add_check</i><span>Product List</span> </a>
                 </div>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">reorder
-                    </i>
-                    <span>Manage Inventory</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-small">
-                    
-               
-                  <a class="dropdown-item text-danger" href="/inventory">
-                    <i class="material-icons text-danger">view_day</i><span> Inventory</span> </a>
-                  <a class="dropdown-item text-danger" href="/inventorylist">
-                    <i class="material-icons text-danger">view_comfy</i><span> Inventory List</span></a>
-                    <a class="dropdown-item text-danger" href="/inventoryalert">
-                      <i class="material-icons text-danger">message</i><span> Inventory Alerts</span></a>
-                 
-                    </div>
-              </li>
+             
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="material-icons">show_chart
@@ -144,7 +127,7 @@
                       <i class="fas fa-search"></i>
                     </div>
                   </div>
-                  <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+                  <input class="navbar-search form-control" type="text"  aria-label="Search"> </div>
               </form>
               <ul class="navbar-nav border-left flex-row ">
                 <li class="nav-item border-right dropdown notifications">
@@ -185,11 +168,10 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <img class="user-avatar rounded-circle mr-2" src="images/avatars/0.jpg" alt="User Avatar">
-                    <span class="d-none d-md-inline-block">Sierra Brooks</span>
+                    <span class="d-none d-md-inline-block"><%= user.username %></span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
-                    <a class="dropdown-item" href="user-profile-lite.html">
-                      <i class="material-icons">&#xE7FD;</i> Profile</a>
+                  
                  
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="/logout">

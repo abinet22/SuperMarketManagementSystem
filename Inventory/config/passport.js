@@ -8,7 +8,7 @@ module.exports = function(passport) {
   passport.use(
     new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
       // Match user
-      connection.query('SELECT * FROM users WHERE username = ? ', [email], function(error, results, fields) {
+      connection.query('SELECT * FROM users WHERE userroll="Inventory Manager" && username = ? ', [email], function(error, results, fields) {
         if (error) 
             return done(error);
            

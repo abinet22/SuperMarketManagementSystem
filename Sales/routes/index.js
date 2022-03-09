@@ -10,19 +10,24 @@ router.get('/', forwardAuthenticated, (req, res) => res.render('login'));
 router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
 router.get('/login', forwardAuthenticated, (req, res) => res.render('login'));
 router.get('/dashboard', ensureAuthenticated, async function (req, res) {
-  connection.query('Select * from productlist', function(error, results, fields) {
-    if (error) 
-        {
-            console.log(error);
-        }
-    else
-    {
-      //console.log(results);
-      res.render('dashboard',{productlist:results,
-      user:req.user
-      })
-    }
-  });
+  var queries = [
+    "Select * from productlist",
+   
+      "Select * from inventory where shopid='"+ req.user.assignshop+"'",
+    ];
+    
+    connection.query(queries.join(';'), function (error, results, fields) {
+    
+    if (error) throw error;
+   console.log(results[1]);
+    res.render('dashboard', {
+      productlist: results[0], // First query from array
+     
+      inventorylist:results[1],
+      user:req.user      // Second query from array
+    });
+    
+    });
 });
 
 router.get('/inventorylist', ensureAuthenticated, async function(req, res)

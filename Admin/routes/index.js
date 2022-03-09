@@ -408,7 +408,7 @@ if (errors.length > 0) {
 });
 router.post('/addnewproduct',async function(req,res) 
 {
-    const {proname,procategory,price} = req.body;
+    const {proname,procategory,price,procode} = req.body;
 let errors = [];
 var procatlist =[];
 connection.query('Select * from productCategory', function(error, results, fields) {
@@ -455,12 +455,12 @@ if (errors.length > 0) {
       }
       else
       {
-        connection.query('Insert into productlist(proid,productname,productcategory,price) values(?,?,?,?) ', [proid,proname,procategory,price], function(error, results, fields) {
+        connection.query('Insert into productlist(proid,productname,productcategory,price,productcode) values(?,?,?,?,?) ', [proid,proname,procategory,price,procode], function(error, results, fields) {
           if (error) 
               {
                 res.render('addproduct',{
                   procatlist:procatlist,
-                  error_msg:'Something is wrong please try later'
+                  error_msg:'Something is wrong please check you enter unique product code'
                 })
               }
           else

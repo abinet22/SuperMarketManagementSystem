@@ -21,6 +21,9 @@ router.get('/dashboard', ensureAuthenticated, async function (req, res) {
     connection.query(queries.join(';'), function (error, results, fields) {
     
     if (error) throw error;
+   console.log(results[1]);
+   console.log(results[0]);
+   console.log(results[2]);
    
     res.render('dashboard', {
       productlist: results[0], // First query from array
@@ -165,9 +168,9 @@ for (let i = 0; i < myObj.length; i++) {
 copyItems.forEach((item) => {
   //console.log(item.UnitPrice); item.ShelveNumber 
   var productid  = item.ProductId ;
-  inventory.push([req.user.assignshop,req.user.assignshop,item.ProductId,"catid",item.ProductCategory,item.ProductDescription,item.NewQuantity,item.ShelveNumber,postdate]);
+  // inventory.push([req.user.assignshop,req.user.assignshop,item.ProductId,"catid",item.ProductCategory,item.ProductDescription,item.NewQuantity,item.ShelveNumber,postdate]);
 
-  values.push([req.user.userid,req.user.assignshop,item.ProductId,item.ProductCategory,item.ProductDescription,item.NewQuantity,item.BuyingPrice,postdate]);
+  // values.push([req.user.userid,req.user.assignshop,item.ProductId,item.ProductCategory,item.ProductDescription,item.NewQuantity,item.BuyingPrice,postdate]);
 
   connection.query("Select * from inventory where shopid='"+ req.user.assignshop +"' && productid='"+ productid +"'", function (error, results, fields) {
         
@@ -178,7 +181,7 @@ copyItems.forEach((item) => {
    else if(results.length == 0)
     {
   
-      connection.query('INSERT INTO inventory (inventoryid,shopid,productid,procategoryid, procategory ,productname ,quantity,shelfno,postdate) VALUES(?,?,?,?,?,?,?,?,?)',[req.user.assignshop,req.user.assignshop,item.ProductId,"catid",item.ProductCategory,item.ProductDescription,item.NewQuantity,item.ShelveNumber,postdate], function (error, results, fields) {
+      connection.query('INSERT INTO inventory (inventoryid,shopid,productid,procategoryid, procategory ,productname ,quantity,shelfno,postdate,productcode) VALUES(?,?,?,?,?,?,?,?,?,?)',[req.user.assignshop,req.user.assignshop,item.ProductId,"catid",item.ProductCategory,item.ProductDescription,item.NewQuantity,item.ShelveNumber,postdate,item.ProductCode], function (error, results, fields) {
   
         if (error) {
           res.json({messages:'error'});  
@@ -257,7 +260,7 @@ router.post('/populateZipCodes',async function(req, res){
       //console.log(c);
        // console.log(req.body.start);
        // console.log(req.body.length);
-       connection.query("SELECT productid,procategory,productname,quantity  FROM inventory where productname LIKE "+"'"+ searchStr +"%'"+" LIMIT "+req.body.start +","+ req.body.length +""
+       connection.query("SELECT productcode,procategory,productname,quantity  FROM inventory where productname LIKE "+"'"+ searchStr +"%'"+" LIMIT "+req.body.start +","+ req.body.length +""
        , function (error, results,fields) {
                if (error) {
                    console.log('error while getting results'+error);
@@ -280,44 +283,6 @@ router.post('/populateZipCodes',async function(req, res){
 
   })
         
-      
-        
-
-//   NewLoad.count({isstart:"Yes"}, function(err, c) {
-//       recordsTotal=c;
-//       console.log(c);
-//       NewLoad.count({
-//         $and: [
-//            {isstart:"Yes" },
-//             searchStr 
-//         ]
-//      }, function(err, c) {
-//           recordsFiltered=c;
-//           console.log(c);
-//           console.log(req.body.start);
-//           console.log(req.body.length);
-//           NewLoad.find({
-//             $and: [
-//                {isstart:"Yes" },
-//                 searchStr 
-//             ]
-//          }, 'loadfrom loadto loadingdt loadprice',{'skip': Number( req.body.start), 'limit': Number(req.body.length) }, function (err, results) {
-//                   if (err) {
-//                       console.log('error while getting results'+err);
-//                       return;
-//                   }
-          
-//                   var data = JSON.stringify({
-//                       "draw": req.body.draw,
-//                       "recordsFiltered": recordsFiltered,
-//                       "recordsTotal": recordsTotal,
-//                       "data": results
-//                   });
-//                   res.send(data);
-//               });
-      
-//         });
-//  });
  
 });
 module.exports = router;
