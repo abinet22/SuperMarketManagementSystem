@@ -83,9 +83,47 @@ router.get('/adduser', ensureAuthenticated, async function(req, res) {
     else
     {
       console.log(results);
-      res.render('adduser',{shoplist:results})
+      res.render('adduser',{shoplist:results,user:req.user})
     }
   });
+});
+router.get('/edituser/(:userid)', ensureAuthenticated, async function(req, res) {
+  var queries = [
+    "Select * from shops",
+   
+      "Select * from users where userid='"+ req.params.userid+"'",
+    ];
+    
+    connection.query(queries.join(';'), function (error, results, fields) {
+    
+    if (error) throw error;
+   console.log(results[1]);
+    res.render('edituser', {
+      shoplist: results[0], // First query from array
+     
+      userlist:results[1],
+      user:req.user      // Second query from array
+    });
+    
+    });
+ 
+
+});
+router.get('/updateprice/(:productcode)', ensureAuthenticated, async function(req, res) {
+
+   
+    connection.query("Select * from productlist where productcode='"+ req.params.productcode+"'", function (error, results, fields) {
+    
+    if (error) throw error;
+  
+   res.render('updateproductprice', {
+    productcode:req.params.productcode,
+    productlist:results,
+    user:req.user      // Second query from array
+  });
+    
+    });
+
 });
 router.get('/userlist', ensureAuthenticated, async function(req, res)
 {
@@ -97,12 +135,12 @@ connection.query('Select * from users', function(error, results, fields) {
   else
   {
     console.log(results);
-    res.render('userlist',{userlist:results})
+    res.render('userlist',{userlist:results,user:req.user})
   }
 });
 }
 );
-router.get('/addnewshop', ensureAuthenticated, (req, res) => res.render('addshop'));
+router.get('/addnewshop', ensureAuthenticated, (req, res) => res.render('addshop',{user:req.user}));
 router.get('/shoplist', ensureAuthenticated, async function(req, res){
   connection.query('Select * from shops', function(error, results, fields) {
     if (error) 
@@ -112,7 +150,7 @@ router.get('/shoplist', ensureAuthenticated, async function(req, res){
     else
     {
       console.log(results);
-      res.render('shoplist',{shoplist:results})
+      res.render('shoplist',{shoplist:results,user:req.user})
     }
   });
 });
@@ -127,7 +165,7 @@ router.get('/addcategory', ensureAuthenticated, async function(req, res)
     else
     {
       console.log(results);
-      res.render('addproductcategory',{procatlist:results})
+      res.render('addproductcategory',{procatlist:results,user:req.user})
     }
   });
 });
@@ -140,7 +178,7 @@ router.get('/addproduct', ensureAuthenticated, async function(req, res) {
     else
     {
       console.log(results);
-      res.render('addproduct',{procatlist:results})
+      res.render('addproduct',{procatlist:results,user:req.user})
     }
   });
 });
@@ -153,13 +191,27 @@ router.get('/productlist', ensureAuthenticated, async function (req, res) {
     else
     {
       console.log(results);
-      res.render('productlist',{productlist:results})
+      res.render('productlist',{productlist:results,user:req.user})
+    }
+  });
+});
+router.post('/searchproductbyname', ensureAuthenticated, async function (req, res) {
+  const {proname} = req.body
+  connection.query("Select * from productlist where productname LIKE "+"'"+ proname +"%'", function(error, results, fields) {
+    if (error) 
+        {
+            console.log(error);
+        }
+    else
+    {
+      console.log(results);
+      res.render('productlist',{productlist:results,user:req.user})
     }
   });
 });
 
-router.get('/report', ensureAuthenticated, (req, res) => res.render('report'));
-router.get('/stastics', ensureAuthenticated, (req, res) => res.render('stastics'));
+router.get('/report', ensureAuthenticated, (req, res) => res.render('report',{user:req.user}));
+router.get('/stastics', ensureAuthenticated, (req, res) => res.render('stastics',{user:req.user}));
 
 
 
@@ -178,7 +230,7 @@ router.get('/logout', (req, res) => {
     res.redirect('/login');
   });
   
-router.post('/addnewsystemuser',async function(req,res)
+router.post('/addnewsystemuser',ensureAuthenticated,async function(req,res)
 {
     const {username,password,retypepassword,userroll,assignshop} = req.body;
 let errors = [];
@@ -200,14 +252,14 @@ if (!username || !password || !retypepassword || !userroll || !assignshop){
 if (errors.length > 0) {
   res.render('adduser', {
     errors,
-    shoplist:shoplist
+    shoplist:shoplist,user:req.user
   });
 }
 else if( password != retypepassword)
 {
   res.render('adduser', {
     shoplist:shoplist,
-  error_msg:'Password not match'
+  error_msg:'Password not match',user:req.user
     
   });
 }
@@ -229,7 +281,7 @@ else if( password != retypepassword)
        {
           res.render('adduser',
           {  shoplist:shoplist,
-              error_msg:'User Name Already There'
+              error_msg:'User Name Already There',user:req.user
           })
       }
       else
@@ -243,14 +295,14 @@ else if( password != retypepassword)
                       {
                         res.render('adduser',{
                           shoplist:shoplist,
-                          error_msg:'Something is wrong please try later'
+                          error_msg:'Something is wrong please try later',user:req.user
                         })
                       }
                   else
                   {
                     res.render('adduser',{
                       shoplist:shoplist,
-                      success_msg:'You are successfully add new system user'
+                      success_msg:'You are successfully add new system user',user:req.user
                     })
                   }
                  
@@ -267,7 +319,7 @@ else if( password != retypepassword)
  }
    
 });
-router.post('/addnewshop',async function(req,res)
+router.post('/addnewshop', ensureAuthenticated,async function(req,res)
 {
     const {shopname,address,phone} = req.body;
 let errors = [];
@@ -278,7 +330,7 @@ if (!shopname || !address || !phone){
 if (errors.length > 0) {
   res.render('addshop', {
     errors,
-    
+    user:req.user
   });
 }
 
@@ -300,7 +352,8 @@ if (errors.length > 0) {
        {
           res.render('addshop',
           {
-              error_msg:'Shop Name Already There'
+              error_msg:'Shop Name Already There',
+              user:req.user
           })
       }
       else
@@ -309,13 +362,14 @@ if (errors.length > 0) {
           if (error) 
               {
                 res.render('addshop',{
+                  user:req.user,
                   error_msg:'Error occurs please try again'
                 })
               }
           else
           {
             res.render('addshop',{
-              success_msg:'You are successfully add new shop'
+              success_msg:'You are successfully add new shop',user:req.user
             })
           }
          
@@ -330,7 +384,7 @@ if (errors.length > 0) {
  }
    
 });
-router.post('/addnewproductcategory',async function(req,res)
+router.post('/addnewproductcategory', ensureAuthenticated,async function(req,res)
 {
     const {catname} = req.body;
 let errors = [];
@@ -352,7 +406,7 @@ if (!catname){
 if (errors.length > 0) {
   res.render('addproductcategory', {
     errors,
-    procatlist:procatlist
+    procatlist:procatlist,user:req.user
   });
 }
 
@@ -374,7 +428,7 @@ if (errors.length > 0) {
        {
           res.render('addproductcategory',
           {    procatlist:procatlist,
-              error_msg:'Product Category Name Already There'
+              error_msg:'Product Category Name Already There',user:req.user
           })
       }
       else
@@ -384,14 +438,14 @@ if (errors.length > 0) {
               {
                 res.render('addproductcategory',{
                   procatlist:procatlist,
-                  error_msg:'Something is wrong please try later'
+                  error_msg:'Something is wrong please try later',user:req.user
                 })
               }
           else
           {
             res.render('addproductcategory',{
               procatlist:procatlist,
-              success_msg:'You are successfully add new product category'
+              success_msg:'You are successfully add new product category',user:req.user
             })
           }
          
@@ -406,7 +460,7 @@ if (errors.length > 0) {
  }
    
 });
-router.post('/addnewproduct',async function(req,res) 
+router.post('/addnewproduct',ensureAuthenticated,async function(req,res) 
 {
     const {proname,procategory,price,procode} = req.body;
 let errors = [];
@@ -428,7 +482,7 @@ if (!proname){
 if (errors.length > 0) {
   res.render('addproduct', {
     errors,
-    procatlist:procatlist
+    procatlist:procatlist,user:req.user
   });
 }
 
@@ -450,7 +504,7 @@ if (errors.length > 0) {
        {
           res.render('addproduct',
           {    procatlist:procatlist,
-              error_msg:'Product  Name Already There'
+              error_msg:'Product  Name Already There',user:req.user
           })
       }
       else
@@ -460,14 +514,14 @@ if (errors.length > 0) {
               {
                 res.render('addproduct',{
                   procatlist:procatlist,
-                  error_msg:'Something is wrong please check you enter unique product code'
+                  error_msg:'Something is wrong please check you enter unique product code',user:req.user
                 })
               }
           else
           {
             res.render('addproduct',{
               procatlist:procatlist,
-              success_msg:'You are successfully add new product'
+              success_msg:'You are successfully add new product',user:req.user
             })
           }
          
@@ -481,5 +535,244 @@ if (errors.length > 0) {
 
  }
    
+});
+router.post('/updateproductprice/(:productcode)',ensureAuthenticated,async function(req,res) 
+{
+    const {price} = req.body;
+let errors = [];
+var procatlist =[];
+
+if (!price){
+  errors.push({ msg: 'Please add all required fields' });
+ 
+}
+
+if (errors.length > 0) {
+  var queries = [
+    "Select * from productlist where productcode='"+ req.params.productcode+"'",
+    ];
+    
+    connection.query(queries.join(';'), function (error, results, fields) {
+    
+    if (error) throw error;
+   console.log(results[1]);
+    res.render('updateproductprice', {
+      productcode:req.params.productcode,
+      productlist:results[0],
+      user:req.user ,
+     errors     // Second query from array
+    });
+    
+    });
+}
+
+ else {
+  
+  var sqludt = "UPDATE productlist SET price = '"+ price +"' WHERE productcode = '"+ req.params.productcode +"'";
+  
+  connection.query(sqludt, function(error, results, fields) {
+      if (error) 
+          {
+              console.log(error);
+          }
+    
+      else
+      {
+        var queries = [
+          "Select * from productlist where productcode='"+ req.params.productcode+"'"
+          ];
+          
+          connection.query(queries.join(';'), function (error, results, fields) {
+          
+          if (error) throw error;
+         console.log(results[1]);
+          res.render('updateproductprice', {
+            productcode:req.params.productcode,
+            productlist:results[0],
+            user:req.user,
+            success_msg:"Successfully Update Product Price"      // Second query from array
+          });
+          
+          });
+          
+      
+       
+      }
+     
+  });
+
+ }
+   
+});
+router.post('/editnewsystemuser/(:userid)',ensureAuthenticated,async function(req,res) 
+{
+    const {userroll,assignshop, password} = req.body;
+let errors = [];
+var procatlist =[];
+
+if (!userroll || !assignshop || password){
+  errors.push({ msg: 'Please add all required fields' });
+ 
+}
+if (userroll== 0  || assignshop == 0){
+  errors.push({ msg: 'Please add all required fields' });
+ 
+}
+if (errors.length > 0) {
+  var queries = [
+    "Select * from shops",
+   
+      "Select * from users where userid='"+ req.params.userid+"'",
+    ];
+    
+    connection.query(queries.join(';'), function (error, results, fields) {
+    
+    if (error) throw error;
+   console.log(results[1]);
+    res.render('edituser', {
+      shoplist: results[0], // First query from array
+     
+      userlist:results[1],
+      user:req.user ,
+     errors     // Second query from array
+    });
+    
+    });
+}
+
+ else {
+  
+  var sqludt = "UPDATE users SET assignshop = '"+ assignshop +"',userroll = '"+ userroll +"',password= '"+ password +"' WHERE userid = '"+ req.params.userid +"'";
+  
+  connection.query(sqludt, function(error, results, fields) {
+      if (error) 
+          {
+              console.log(error);
+          }
+    
+      else
+      {
+        var queries = [
+          "Select * from shops",
+         
+            "Select * from users where userid='"+ req.params.userid+"'",
+          ];
+          
+          connection.query(queries.join(';'), function (error, results, fields) {
+          
+          if (error) throw error;
+         console.log(results[1]);
+          res.render('edituser', {
+            shoplist: results[0], // First query from array
+           
+            userlist:results[1],
+            user:req.user,
+            success_msg:"Successfully Update userinfo"      // Second query from array
+          });
+          
+          });
+          
+      
+       
+      }
+     
+  });
+
+ }
+   
+});
+router.post('/deleteuser/(:userid)', ensureAuthenticated, async function(req, res) {
+ 
+
+  var sqludt = "Delete from users WHERE userid = '"+ req.params.userid +"'";
+  
+  connection.query(sqludt, function(error, results, fields) {
+      if (error) 
+          {
+              console.log(error);
+          }
+    
+      else
+      {
+        connection.query('Select * from users', function(error, results, fields) {
+          if (error) 
+              {
+                  console.log(error);
+              }
+          else
+          {
+            console.log(results);
+            res.render('userlist',{userlist:results,user:req.user,success_msg:'User Deleted'})
+          }
+        });
+          
+      
+       
+      }
+     
+  });
+});
+
+router.post('/deleteproduct/(:productcode)', ensureAuthenticated, async function(req, res) {
+ 
+
+  var sqludt = "Delete from productlist WHERE productcode = '"+ req.params.productcode +"'";
+  
+  connection.query(sqludt, function(error, results, fields) {
+      if (error) 
+          {
+              console.log(error);
+          }
+    
+      else
+      {
+        connection.query('Select * from productlist', function(error, results, fields) {
+          if (error) 
+              {
+                  console.log(error);
+              }
+          else
+          {
+            console.log(results);
+            res.render('productlist',{productlist:results,user:req.user,success_msg:'Product Deleted'})
+          }
+        });
+          
+      
+       
+      }
+     
+  });
+});
+router.post('/diactivateuser/(:userid)', ensureAuthenticated, async function(req, res) {
+ 
+
+  var sqludt = "Update users SET isactive = 'No' WHERE userid = '"+ req.params.userid +"'";
+  
+  connection.query(sqludt, function(error, results, fields) {
+      if (error) 
+          {
+              console.log(error);
+          }
+    
+      else
+      {
+        connection.query('Select * from users', function(error, results, fields) {
+          if (error) 
+              {
+                  console.log(error);
+              }
+          else
+          {
+            console.log(results);
+            res.render('userlist',{userlist:results,user:req.user,success_msg:'User Diactivated'})
+          }
+        });
+          
+      
+       
+      }
+     
+  });
 });
 module.exports = router;

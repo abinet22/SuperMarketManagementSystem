@@ -601,6 +601,7 @@
                       <%  } %>
                       </select>
                     </div>
+  
                     <div class="form-group" style="display: none;">
                       <label for="exampleFormControlInput1">Product ID</label>
                       <input type="hidden" class="form-control" id="proid" name="proid" placeholder="Product ID" disabled>
@@ -609,7 +610,7 @@
                       <label for="exampleFormControlInput1">Product Code</label>
                       <input type="text" class="form-control" id="procode" name="procode" placeholder="Product Code" disabled>
                     </div>
-					<div class="form-group">
+					<div class="form-group" style="display: none;">
 						<label for="exampleFormControlInput1">Product Category</label>
 						<input type="text" class="form-control" id="procat" name="procat" placeholder="Product Category"  disabled>
 					  </div>
@@ -665,7 +666,7 @@ if(name.length > 0)
 for(var i = 0; i < name.length; i++)
 {
 var productcode  = name[i].productcode;
-var procatid  = name[i].productcategory;
+
 if(productcode === value)
 {
 
@@ -673,24 +674,19 @@ var id = name[i].proid;
 var price = name[i].price;
 var proname = name[i].productname;
 var procode = name[i].productcode;
+var productcategory = name[i].productcategory;
  document.getElementById('proid').value = id;
  document.getElementById('price').value = price;
  document.getElementById('proname').value = proname;
  document.getElementById('procode').value = procode;
+ document.getElementById('procat').value = productcategory;
+}
 
- for(var i = 0; i < cat.length; i++)
-{
-  var category  = cat[i].catid;
-  if(category === procatid)
-       {
-        var categoryname = cat[i].procategoryname;
-       
-           document.getElementById('procat').value = categoryname;
-      
-      }
-   }
 
-   if(inventory == 0)
+}
+
+
+if(inventory == 0)
 {
 
   document.getElementById('currqty').value = 0;
@@ -723,13 +719,6 @@ else{
 //alert(name[i].productname);
 }
 }
-
-  }
-
-
-}
-
-
 
 }
 

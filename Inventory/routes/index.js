@@ -248,7 +248,7 @@ router.post('/populateZipCodes',async function(req, res){
   var recordsFiltered=0;
   // var skip = (page-1) * req.body.draw; 
   // var limit = skip + ',' + numPerPage; 
-  connection.query("Select count(*) AS namesCount from inventory where shopid = '"+ req.user.assignshop + "' && productname LIKE "+"'"+ searchStr +"%' ", function(error, rows, fields) {
+  connection.query("Select count(*) AS namesCount from inventory where shopid = '"+ req.user.assignshop + "' && productcode LIKE "+"'"+ searchStr +"%' ORDER BY productname DESC", function(error, rows, fields) {
     if (error) 
         {
             console.log(error);
@@ -257,10 +257,10 @@ router.post('/populateZipCodes',async function(req, res){
     {
       recordsTotal = rows[0].namesCount;
       recordsFiltered=Math.ceil(recordsTotal / req.body.draw);
-      //console.log(c);
-       // console.log(req.body.start);
-       // console.log(req.body.length);
-       connection.query("SELECT productcode,procategory,productname,quantity  FROM inventory where productname LIKE "+"'"+ searchStr +"%'"+" LIMIT "+req.body.start +","+ req.body.length +""
+      console.log(recordsFiltered);
+       console.log(req.body.draw);
+        console.log(req.body.length);
+       connection.query("SELECT productcode,procategory,productname,quantity  FROM inventory where productcode LIKE "+"'"+ searchStr +"%'"+" ORDER BY productname DESC LIMIT "+req.body.start +","+ req.body.length +""
        , function (error, results,fields) {
                if (error) {
                    console.log('error while getting results'+error);
