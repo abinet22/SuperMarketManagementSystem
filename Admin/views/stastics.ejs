@@ -21,7 +21,7 @@
         <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
           <div class="main-navbar">
             <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
-              <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
+              <a class="navbar-brand w-100 mr-0" href="/" style="line-height: 25px;">
                 <div class="d-table m-auto">
                   <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="images/shards-dashboards-logo.svg" alt="Shards Dashboard">
                   <span class="d-none d-md-inline ml-1">SISMS </span>
@@ -55,7 +55,6 @@
                   <a class="dropdown-item text-danger" href="/adduser">
                     <i class="material-icons text-danger">add_to_photos</i><span> Add New User</span> </a>
                  
-               
                     <a class="dropdown-item text-danger" href="/userlist">
                         <i class="material-icons text-danger">playlist_add_check</i><span>User List</span> </a>
                 </div>
@@ -87,12 +86,13 @@
                   <a class="dropdown-item text-danger" href="/addcategory">
                     <i class="material-icons text-danger">add_to_photos</i><span> Add Product Category</span> </a>
                   <a class="dropdown-item text-danger" href="/addproduct">
-                    <i class="material-icons text-danger">add_circle</i><span> Add Product</span></a>
+                    <i class="material-icons text-danger">add_circle_outline</i><span> Add Product</span></a>
                
                     <a class="dropdown-item text-danger" href="/productlist">
                         <i class="material-icons text-danger">playlist_add_check</i><span>Product List</span> </a>
                 </div>
               </li>
+             
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="material-icons">show_chart
@@ -103,9 +103,10 @@
                     
                
                   <a class="dropdown-item text-danger" href="/report">
-                    <i class="material-icons text-danger">add_to_photos</i><span> Show Reports</span> </a>
+                    <i class="material-icons text-danger">share
+                    </i><span> Show Reports</span> </a>
                   <a class="dropdown-item text-danger" href="/stastics">
-                    <i class="material-icons text-danger">add_circle</i><span> Show Stastics</span></a>
+                    <i class="material-icons text-danger">timeline</i><span> Show Stastics</span></a>
                
                     </div>
               </li>
@@ -126,7 +127,7 @@
                       <i class="fas fa-search"></i>
                     </div>
                   </div>
-                  <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+                  <input class="navbar-search form-control" type="text"  aria-label="Search"> </div>
               </form>
               <ul class="navbar-nav border-left flex-row ">
                 <li class="nav-item border-right dropdown notifications">
@@ -167,11 +168,10 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <img class="user-avatar rounded-circle mr-2" src="images/avatars/0.jpg" alt="User Avatar">
-                    <span class="d-none d-md-inline-block">Sierra Brooks</span>
+                    <span class="d-none d-md-inline-block"><%= user.username %></span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-small">
-                    <a class="dropdown-item" href="user-profile-lite.html">
-                      <i class="material-icons">&#xE7FD;</i> Profile</a>
+                  
                  
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="/logout">
@@ -186,104 +186,165 @@
               </nav>
             </nav>
           </div>
+        
           <!-- / .main-navbar -->
           <div class="main-content-container container-fluid px-4">
             <!-- Page Header -->
             <div class="page-header row no-gutters py-4">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <span class="text-uppercase page-subtitle">Dashboard</span>
-                <h3 class="page-title">Manage Products</h3>
+                <h3 class="page-title">Stastics&Reports/Stastics</h3>
               </div>
             </div>
             <!-- End Page Header -->
             <!-- Small Stats Blocks -->
             <div class="row">
-           <div class ="col-md-6 offset-md-3">
-           <div class="card">
-               <div class= "card-header">
-                   <h3>Add New Product</h3>
-               </div>
-               <div class="card-body">
-                <form action="/addnewproduct" method="post">
-                  <%- include ('./partials/messages') %>
-                    <div class="form-group">
-                      <label for="exampleFormControlInput1">Product Name</label>
-                      <input type="text" class="form-control" id="proname" name="proname" placeholder="Product Name"  onkeypress="return check(event)">
-                    </div>
-    <script>
-      function check(e) {
-    var keynum
-    var keychar
-    var numcheck
-    // For Internet Explorer
-    if (window.event) {
-        keynum = e.keyCode;
-    }
-    // For Netscape/Firefox/Opera
-    else if (e.which) {
-        keynum = e.which;
-    }
-    keychar = String.fromCharCode(keynum);
-    //List of special characters you want to restrict
-    if (keychar == "'" || keychar == "`" || keychar =="!" || keychar =="@" || keychar =="#" || keychar =="$" || keychar =="%" || keychar =="^" || keychar =="&" || keychar =="*" || keychar =="(" || keychar ==")" || keychar =="-" || keychar =="_" || keychar =="+" || keychar =="=" || keychar =="/" || keychar =="~" || keychar =="<" || keychar ==">" || keychar =="," || keychar ==";" || keychar ==":" || keychar =="|" || keychar =="?" || keychar =="{" || keychar =="}" || keychar =="[" || keychar =="]" || keychar =="¬" || keychar =="£" || keychar =='"' || keychar =="\\") {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-    </script>
-                    
-                   <div class="form-group">
-        <label for="exampleFormControlSelect1">Select Product Category</label>
-        <select class="form-control" id="procategory" name="procategory">
-          <% if (procatlist.length >0){ %>
-         
-            <% procatlist.forEach(function(row){ %>
            
-          <option value='<%= row.catid %>'><%= row.procategoryname %></option>
-          <% })} else { %>
-
-            <%  } %>
-       
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="exampleFormControlInput1">Product Price</label>
-        <input type="text" class="form-control" id="price" name="price" placeholder="Product Price" onkeypress="return isNumberKey(event)">
-      </div>
-      <div class="form-group">
-        <label for="exampleFormControlInput1">Product Code</label>
-        <input type="text" class="form-control" id="procode" name="procode" placeholder="Product Code">
-      </div>
-      <button type="submit" class="btn btn-sm btn-block btn-primary">ADD PRODUCT</button>
-                  </form>
-               </div>
-           </div>
-           </div>
-            </div>
-            <script>
-              function isNumberKey(evt)
-{
-  var charCode = (evt.which) ? evt.which : evt.keyCode;
-  if (charCode != 46 && charCode > 31 
-    && (charCode < 48 || charCode > 57))
-  
-     return false;
-
-  return true;
-}
-</script>
-            <!-- End Small Stats Blocks -->
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                
+                        <div class="card-body p-0 d-flex">
+                          <div class="d-flex flex-column m-auto">
+                            <div class="stats-small__data text-center">
+                              <span class="stats-small__label text-uppercase">Sales</span>
+                              <h6 class="stats-small__value count my-3"></h6>
+                            </div>
+                          
+                            <div class="stats-small__data">
+                           
+                            </div>
+                          </div>
+                          <canvas height="120" class="blog-overview-stats-small-4"></canvas>
+                        </div>
+                       
+               
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                
+                        <div class="card-body p-0 d-flex">
+                          <div class="d-flex flex-column m-auto">
+                            <div class="stats-small__data text-center">
+                              <span class="stats-small__label text-uppercase">InventoryLog</span>
+                              <h6 class="stats-small__value count my-3"></h6>
+                            </div>
+                          
+                            <div class="stats-small__data">
+                           
+                            </div>
+                          </div>
+                          <canvas height="120" class="blog-overview-stats-small-3"></canvas>
+                        </div>
+                       
+                       
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                
+                        <div class="card-body p-0 d-flex">
+                          <div class="d-flex flex-column m-auto">
+                            <div class="stats-small__data text-center">
+                              <span class="stats-small__label text-uppercase">TransactionLog</span>
+                              <h6 class="stats-small__value count my-3"></h6>
+                            </div>
+                          
+                            <div class="stats-small__data">
+                            
+                            </div>
+                          </div>
+                          <canvas height="120" class="blog-overview-stats-small-3"></canvas>
+                        </div>
+                       
+                       
+                </div>
+              </div>
          
           
+            </div>
+            <!-- End Small Stats Blocks -->
+            <div class="row">
+            <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">Total Sale By Shop</h6>
+                  </div>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                     
+                    <li class="list-group-item d-flex px-3">
+                      <span class="text-semibold text-fiord-blue">sd</span>
+                      <span class="ml-auto text-right text-semibold text-reagent-gray">s</span>
+                    </li>
+                 
+                    </ul>
+                  </div>
+                
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">Total Sale By Shop</h6>
+                  </div>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                     
+                    <li class="list-group-item d-flex px-3">
+                      <span class="text-semibold text-fiord-blue">sd</span>
+                      <span class="ml-auto text-right text-semibold text-reagent-gray">s</span>
+                    </li>
+                 
+                    </ul>
+                  </div>
+                
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">Total Sale By Shop</h6>
+                  </div>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                     
+                    <li class="list-group-item d-flex px-3">
+                      <span class="text-semibold text-fiord-blue">sd</span>
+                      <span class="ml-auto text-right text-semibold text-reagent-gray">s</span>
+                    </li>
+                 
+                    </ul>
+                  </div>
+                
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">Total Sale By Shop</h6>
+                  </div>
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-small list-group-flush">
+                     
+                    <li class="list-group-item d-flex px-3">
+                      <span class="text-semibold text-fiord-blue">sd</span>
+                      <span class="ml-auto text-right text-semibold text-reagent-gray">s</span>
+                    </li>
+                 
+                    </ul>
+                  </div>
+                
+                </div>
+              </div>
               <!-- End Top Referrals Component -->
             </div>
           </div>
+        
           <footer class="main-footer d-flex p-2 px-3 bg-white border-top">
        
             <span class="copyright ml-auto my-auto mr-2">Copyright © 2021
-              <a href="https://techlinktechnologies.com" rel="nofollow">TechLinkTechnologies</a>
+              <a href="https://techlinkethiopia.com" rel="nofollow">TechLinkTechnologies</a>
             </span>
           </footer>
         </main>

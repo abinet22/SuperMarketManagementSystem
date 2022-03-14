@@ -475,7 +475,7 @@ connection.query('Select * from productCategory', function(error, results, field
     procatlist = results;
   }
 });
-if (!proname){
+if (!proname || !procategory ||!price || !procode){
   errors.push({ msg: 'Please add all required fields' });
  
 }
